@@ -37,7 +37,7 @@ class MigrationController extends Controller
         );
     }
 
-    public function freshSeed(){
+    public function fresh_seed(){
         if (!app()->environment(['local', 'staging'])) {
             abort(403, 'Forbidden');
         }
