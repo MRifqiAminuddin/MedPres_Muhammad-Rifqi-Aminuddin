@@ -2,53 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
 class MigrationController extends Controller
 {
-    public function index(){
-        if (!app()->environment(['local', 'staging'])) {
-            abort(403, 'Forbidden');
-        }
+    public function index()
+    {
+        $this->ensureAllowedEnvironment();
 
         Artisan::call('migrate', [
-            '--seed'  => true,
             '--force' => true,
         ]);
 
-        return response(
-            '<pre>' . Artisan::output() . '</pre>'
-        );
+        return $this->artisanResponse();
     }
 
-    public function fresh(){
-        if (!app()->environment(['local', 'staging'])) {
-            abort(403, 'Forbidden');
-        }
+    public function fresh()
+    {
+        $this->ensureAllowedEnvironment();
+
+        Artisan::call('migrate:fresh', [
+            '--force' => true,
+        ]);
+
+        return $this->artisanResponse();
+    }
+
+    public function freshSeed()
+    {
+        $this->ensureAllowedEnvironment();
 
         Artisan::call('migrate:fresh', [
             '--seed'  => true,
             '--force' => true,
         ]);
 
-        return response(
-            '<pre>' . Artisan::output() . '</pre>'
-        );
+        return $this->artisanResponse();
     }
 
-    public function fresh_seed(){
+    private function ensureAllowedEnvironment(): void
+    {
         if (!app()->environment(['local', 'staging'])) {
             abort(403, 'Forbidden');
         }
+    }
 
-        Artisan::call('migrate:fresh --seed', [
-            '--seed'  => true,
-            '--force' => true,
-        ]);
-
-        return response(
-            '<pre>' . Artisan::output() . '</pre>'
-        );
+    private function artisanResponse()
+    {
+        return response('<pre>' . e(Artisan::output()) . '</pre>');
     }
 }
