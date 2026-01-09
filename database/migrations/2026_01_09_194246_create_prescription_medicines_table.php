@@ -18,6 +18,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('medicine_id');
             $table->string('dosage');
+            $table->enum('status', ['Diberikan', 'Tidak Diberikan'])->nullable();
             $table->timestamps();
             $table->index('medicine_id');
         });

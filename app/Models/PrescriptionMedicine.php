@@ -11,5 +11,6 @@ class PrescriptionMedicine extends Model
         'medicine_id',
         'dosage',
         'medicine_id',
+        'status',
     ];
 }

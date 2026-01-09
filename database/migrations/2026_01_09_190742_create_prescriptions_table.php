@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('patient_id')
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->enum('status', ['Belum', 'Menunggu', 'Sudah'])->default('Belum');
             $table->date('prescription_date');
             $table->timestamps();
         });
