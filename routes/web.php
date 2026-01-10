@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MigrationController;
 
 /*
@@ -22,6 +23,16 @@ Route::prefix('auth')
         Route::post('logout', [AuthController::class, 'logout'])
             ->name('logout');
     });
+
+/*
+|--------------------------------------------------------------------------
+| Beranda
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home.index');
+
 
 Route::prefix('migration')
     ->name('migration.')
