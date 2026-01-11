@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -19,8 +20,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'role',
+        'gender',
         'email',
         'password',
+        'activation'
     ];
 
     /**
@@ -45,4 +48,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function doctors(): HasMany
+    {
+        return $this->hasMany(Doctor::class, 'user_id', 'id');
+    }
+
+    public function pharmacists(): HasMany
+    {
+        return $this->hasMany(Pharmacist::class, 'user_id', 'id');
+    }
+
 }

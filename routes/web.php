@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MigrationController;
 
 /*
@@ -10,30 +10,47 @@ use App\Http\Controllers\MigrationController;
 | Authentication (Autentikasi)
 |--------------------------------------------------------------------------
 */
-
-Route::prefix('auth')
-    ->name('auth.')
+Route::name('auth.')
     ->group(function (): void {
-        Route::get('login', [AuthController::class, 'loginIndex'])
+        Route::get('masuk', [AuthController::class, 'loginIndex'])
             ->name('login.index');
 
-        Route::post('login', [AuthController::class, 'loginProcess'])
+        Route::post('masuk', [AuthController::class, 'loginProcess'])
             ->name('login.process');
 
-        Route::post('logout', [AuthController::class, 'logout'])
+        Route::get('keluar', [AuthController::class, 'logout'])
             ->name('logout');
+
+        Route::get('verifikasi', [AuthController::class, 'verificationIndex'])
+            ->name('verification.index');
     });
+
 
 /*
 |--------------------------------------------------------------------------
-| Beranda
+| Wajib Login
 |--------------------------------------------------------------------------
 */
+Route::group(['middleware' => 'auth'], function () {
+    /*
+    |--------------------------------------------------------------------------
+    | Dasbor
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/', function () {
+        return redirect()->route('dashboard.index');
+    });
 
-Route::get('/', [HomeController::class, 'index'])
-    ->name('home.index');
+    Route::get('/dasbor', [DashboardController::class, 'index'])
+        ->name('dashboard.index');
+});
 
 
+/*
+|--------------------------------------------------------------------------
+| Migration
+|--------------------------------------------------------------------------
+*/
 Route::prefix('migration')
     ->name('migration.')
     ->group(function (): void {

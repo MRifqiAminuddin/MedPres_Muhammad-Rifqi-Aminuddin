@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Patient extends Model
 {
@@ -15,4 +16,9 @@ class Patient extends Model
         'name',
         'birth_date',
     ];
+
+    public function encounters(): HasMany
+    {
+        return $this->hasMany(Encounter::class, 'patient_id', 'id');
+    }
 }
