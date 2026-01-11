@@ -12,6 +12,7 @@ class PrescriptionMedicine extends Model
         'medicine_id',
         'dosage',
         'status',
+        'identity'
     ];
 
     public function prescription(): BelongsTo

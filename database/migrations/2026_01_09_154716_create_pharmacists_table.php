@@ -17,6 +17,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
             $table->string('str_number');
+            $table->string('identity', 12);
             $table->timestamps();
         });
     }

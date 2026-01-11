@@ -12,7 +12,8 @@ class Prescription extends Model
         'user_id',
         'patient_id',
         'status',
-        'prescription_date'
+        'prescription_date',
+        'identity'
     ];
 
     public function user(): BelongsTo

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class PharmachistsSeeder extends Seeder
@@ -47,10 +48,12 @@ class PharmachistsSeeder extends Seeder
                 'email' => $data['email'],
                 'password' => bcrypt('12345678'),
                 'activation' => true,
+                'identity' => Str::random(10)
             ]);
 
             $user->pharmacists()->create([
                 'str_number' => $data['str_number'],
+                'identity' => Str::random(10)
             ]);
         }
     }

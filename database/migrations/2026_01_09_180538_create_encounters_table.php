@@ -27,6 +27,7 @@ return new class extends Migration
             $table->text('diagnosis');
             $table->string('other_document')->nullable();
             $table->date('encounter_date');
+            $table->string('identity', 12);
             $table->timestamps();
         });
     }

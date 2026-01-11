@@ -8,6 +8,7 @@ class Variable extends Model
 {
     protected $fillable = [
         'name',
-        'content'
+        'content',
+        'identity'
     ];
 }

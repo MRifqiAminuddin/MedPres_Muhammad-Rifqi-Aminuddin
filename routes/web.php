@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MigrationController;
 
 /*
@@ -10,6 +11,7 @@ use App\Http\Controllers\MigrationController;
 | Authentication (Autentikasi)
 |--------------------------------------------------------------------------
 */
+
 Route::name('auth.')
     ->group(function (): void {
         Route::get('masuk', [AuthController::class, 'loginIndex'])
@@ -43,6 +45,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/dasbor', [DashboardController::class, 'index'])
         ->name('dashboard.index');
+
+    Route::prefix('manajemen')
+        ->name('management.')
+        ->group(function (): void {
+            Route::get('/dokter', [DoctorController::class, 'index'])
+                ->name('doctor.index');
+        });
 });
 
 

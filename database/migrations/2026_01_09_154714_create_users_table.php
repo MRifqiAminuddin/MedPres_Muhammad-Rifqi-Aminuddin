@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('activation')->default(false);
-            $table->rememberToken();
+            $table->string('identity', 12);
             $table->timestamps();
         });
 

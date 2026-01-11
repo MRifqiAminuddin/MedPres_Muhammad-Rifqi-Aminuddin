@@ -12,6 +12,7 @@ class Doctor extends Model
         'str_number',
         'sip_number',
         'station',
+        'identity'
     ];
 
     public function user(): BelongsTo

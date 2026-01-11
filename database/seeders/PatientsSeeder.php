@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Patient;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class PatientsSeeder extends Seeder
@@ -36,7 +37,11 @@ class PatientsSeeder extends Seeder
         ];
 
         foreach ($patients as $data) {
-            Patient::create($data);
+            Patient::create([
+                'name' => $data['name'],
+                'birth_date' => $data['birth_date'],
+                'identity' => Str::random(10)
+            ]);
         }
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use App\Models\User;
 
 class DoctorsSeeder extends Seeder
@@ -56,12 +57,14 @@ class DoctorsSeeder extends Seeder
                 'email' => $data['email'],
                 'password' => bcrypt('12345678'),
                 'activation' => true,
+                'identity' => Str::random(10)
             ]);
 
             $user->doctors()->create([
                 'str_number' => $data['str_number'],
                 'sip_number' => $data['sip_number'],
                 'station' => $data['station'],
+                'identity' => Str::random(10)
             ]);
         }
     }

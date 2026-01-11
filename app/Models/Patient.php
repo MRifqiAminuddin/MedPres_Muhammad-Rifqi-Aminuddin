@@ -15,6 +15,7 @@ class Patient extends Model
     protected $fillable = [
         'name',
         'birth_date',
+        'identity'
     ];
 
     public function encounters(): HasMany

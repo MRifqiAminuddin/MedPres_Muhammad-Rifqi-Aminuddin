@@ -10,6 +10,7 @@ class Pharmacist extends Model
     protected $fillable = [
         'user_id',
         'str_number',
+        'identity'
     ];
 
     public function user(): BelongsTo

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->date('birth_date');
+            $table->string('identity', 12);
             $table->timestamps();
         });
     }

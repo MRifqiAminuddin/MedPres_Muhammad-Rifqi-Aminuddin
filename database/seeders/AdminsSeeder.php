@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class AdminsSeeder extends Seeder
 {
@@ -44,6 +45,7 @@ class AdminsSeeder extends Seeder
                 'email' => $data['email'],
                 'password' => bcrypt('12345678'),
                 'activation' => true,
+                'identity' => Str::random(10)
             ]);
         }
     }

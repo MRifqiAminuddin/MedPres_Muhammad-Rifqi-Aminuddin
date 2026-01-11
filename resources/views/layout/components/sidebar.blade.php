@@ -48,8 +48,8 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Manajemen</h6>
             </li>
             <li class="nav-item">
-                <a id="menuDokter" class="nav-link {{ Request::routeIs('dashboard.index') ? 'active' : '' }}"
-                    href="{{ route('dashboard.index') }}">
+                <a id="menuDokter" class="nav-link {{ Request::routeIs('management.doctor.index') ? 'active' : '' }}"
+                    href="{{ route('management.doctor.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
