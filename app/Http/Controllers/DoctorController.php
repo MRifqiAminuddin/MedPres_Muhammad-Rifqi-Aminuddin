@@ -7,6 +7,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class DoctorController extends Controller
 {
@@ -18,16 +19,10 @@ class DoctorController extends Controller
                     return $user->doctor->station;
                 })
                 ->addColumn('action', function (User $user) {
-                    return '
-                    <center>
-                        <button class="btn bg-gradient-success" style="margin-bottom:0px!important; padding:10px!important" onclick="showEdit(\'' . $user->identity . '\')" >
-                            <i class="fa-solid fa-pencil text-white"></i>
-                        </button>
-                        <button class="btn bg-gradient-danger" style="margin-bottom:0px!important; padding:10px!important" onclick="alertDelete(\'' . $user->name . '\',\'' . $user->identity . '\')" >
-                            <i class="fa-solid fa-trash text-white"></i>
-                        </button>
-                    </center>
-                ';
+                    return view('layout.components.action', [
+                        'name' => $user->name,
+                        'identity' => $user->identity,
+                    ])->render();
                 })
                 ->addIndexColumn()
                 ->make(true);
@@ -62,12 +57,9 @@ class DoctorController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'gender' => [
-                'required',
-                Rule::in(['Laki', 'Perempuan'])
-            ],
+            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'strNumber' => ['required', 'string', 'max:100'],
             'sipNumber' => ['required', 'string', 'max:100'],
@@ -99,7 +91,7 @@ class DoctorController extends Controller
             ],
         ]);
 
-        if ($validated) {
+        DB::transaction(function () use ($request) {
             $user = User::create([
                 'name' => $request['name'],
                 'role' => 'Dokter',
@@ -114,15 +106,12 @@ class DoctorController extends Controller
                 'station' => $request['station'],
                 'identity' => Str::random(10)
             ]);
+        });
 
-            if ($doctor) {
-                $data = [
-                    'status' => 'success',
-                    'message' => 'Berhasil menambah data'
-                ];
-                return response()->json($data);
-            }
-        }
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data berhasil ditambahkan',
+        ]);
     }
 
     public function show(Request $request, string $identity)
@@ -148,81 +137,67 @@ class DoctorController extends Controller
         }
     }
 
-    public function edit(Request $request, string $identity)
+    public function update(Request $request, string $identity)
     {
-        if ($request->ajax()) {
-            $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'gender' => [
-                    'required',
-                    Rule::in(['Laki', 'Perempuan'])
-                ],
-                'email' => ['required', 'email', 'max:255'],
-                'strNumber' => ['required', 'string', 'max:100'],
-                'sipNumber' => ['required', 'string', 'max:100'],
-                'station' => [
-                    'required',
-                    Rule::in([
-                        'Anak',
-                        'Anastesi',
-                        'Andrologi',
-                        'Bedah Orthopaedi',
-                        'Bedah Syaraf',
-                        'Bedah Umum',
-                        'Bedah Urologi',
-                        'Gigi dan Mulut',
-                        'Hamil',
-                        'Hemodialisis',
-                        'Jantung',
-                        'Kandungan',
-                        'Kulit Kelamin',
-                        'Mata',
-                        'Paru',
-                        'Psikiatri',
-                        'Psikologi',
-                        'Rehab Medik',
-                        'Syaraf',
-                        'THT',
-                        'Tumbuh Kembang',
-                    ]),
-                ],
+        $user = User::where('identity', $identity)->firstOrFail();
+
+        $request->validate([
+            'name'      => ['required', 'string', 'max:255'],
+            'gender'    => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'email'     => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'strNumber' => ['required', 'string', 'max:100'],
+            'sipNumber' => ['required', 'string', 'max:100'],
+            'station' => [
+                'required',
+                Rule::in([
+                    'Anak',
+                    'Anastesi',
+                    'Andrologi',
+                    'Bedah Orthopaedi',
+                    'Bedah Syaraf',
+                    'Bedah Umum',
+                    'Bedah Urologi',
+                    'Gigi dan Mulut',
+                    'Hamil',
+                    'Hemodialisis',
+                    'Jantung',
+                    'Kandungan',
+                    'Kulit Kelamin',
+                    'Mata',
+                    'Paru',
+                    'Psikiatri',
+                    'Psikologi',
+                    'Rehab Medik',
+                    'Syaraf',
+                    'THT',
+                    'Tumbuh Kembang',
+                ]),
+            ],
+        ]);
+
+        DB::transaction(function () use ($request, $user) {
+            $user->update([
+                'name'   => $request->name,
+                'gender' => $request->gender,
+                'email'  => $request->email,
             ]);
 
-            if ($validated) {
-                $user = User::where('identity', $identity)->first();
-                if ($user->email == $request['email']) {
-                    $userEdit = $user->update([
-                        'name' => $request['name'],
-                        'role' => 'Dokter',
-                        'gender' => $request['gender'],
-                        'identity' => Str::random(10)
-                    ]);
-                } else {
-                    $userEdit = $user->update([
-                        'name' => $request['name'],
-                        'role' => 'Dokter',
-                        'gender' => $request['gender'],
-                        'email' => $request['email'],
-                        'identity' => Str::random(10)
-                    ]);
-                }
+            $user->pharmacist()->update([
+                'str_number' => $request->strNumber,
+                'sip_number' => $request->sipNumber,
+                'station' => $request->station,
+            ]);
+        });
 
-                $doctor = $user->doctor()->update([
-                    'str_number' => $request['strNumber'],
-                    'sip_number' => $request['sipNumber'],
-                    'station' => $request['station'],
-                    'identity' => Str::random(10)
-                ]);
-
-                if ($doctor && $userEdit) {
-                    $data = [
-                        'status' => 'success',
-                        'message' => 'Berhasil menambah data'
-                    ];
-                    return response()->json($data);
-                }
-            }
-        }
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data berhasil diperbarui',
+        ]);
     }
 
     public function delete(Request $request, string $identity)

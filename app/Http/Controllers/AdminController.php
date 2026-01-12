@@ -15,16 +15,10 @@ class AdminController extends Controller
         if ($request->ajax()) {
             return DataTables::of(User::select('id', 'name', 'email', 'gender', 'identity')->where('role', 'Admin')->orderBy('id', 'asc')->get())
                 ->addColumn('action', function (User $user) {
-                    return '
-                    <center>
-                        <button class="btn bg-gradient-success" style="margin-bottom:0px!important; padding:10px!important" onclick="showEdit(\'' . $user->identity . '\')" >
-                            <i class="fa-solid fa-pencil text-white"></i>
-                        </button>
-                        <button class="btn bg-gradient-danger" style="margin-bottom:0px!important; padding:10px!important" onclick="alertDelete(\'' . $user->name . '\',\'' . $user->identity . '\')" >
-                            <i class="fa-solid fa-trash text-white"></i>
-                        </button>
-                    </center>
-                ';
+                    return view('layout.components.action', [
+                        'name' => $user->name,
+                        'identity' => $user->identity,
+                    ])->render();
                 })
                 ->addIndexColumn()
                 ->make(true);
@@ -36,106 +30,90 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'gender' => [
-                'required',
-                Rule::in(['Laki', 'Perempuan'])
-            ],
+            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
         ]);
 
-        if ($validated) {
-            $user = User::create([
-                'name' => $request['name'],
-                'role' => 'Admin',
-                'gender' => $request['gender'],
-                'email' => $request['email'],
-                'identity' => Str::random(10)
-            ]);
+        User::create([
+            'name'     => $validated['name'],
+            'role'     => 'Admin',
+            'gender'   => $validated['gender'],
+            'email'    => $validated['email'],
+            'identity' => Str::random(10),
+        ]);
 
-            if ($user) {
-                $data = [
-                    'status' => 'success',
-                    'message' => 'Berhasil menambah data'
-                ];
-                return response()->json($data);
-            }
-        }
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data berhasil ditambahkan',
+        ]);
     }
 
     public function show(Request $request, string $identity)
     {
-        if ($request->ajax()) {
-            $user = User::select('id', 'name', 'email', 'gender', 'identity')->where('identity', $identity)->first();
-            if ($user) {
-                $data = [
-                    'status' => 'success',
-                    'message' => 'Data berhasil ditemukan',
-                    'data' => [
-                        'name' => $user->name,
-                        'gender' => $user->gender,
-                        'email' => $user->email,
-                        'identity' => $user->identity
-                    ]
-                ];
-                return response()->json($data);
-            }
+        if (! $request->ajax()) {
+            abort(404);
         }
+
+        $user = User::select('id', 'name', 'email', 'gender', 'identity')
+            ->where('identity', $identity)
+            ->firstOrFail();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data apoteker berhasil diperbarui',
+            'data'    => [
+                'name'     => $user->name,
+                'gender'   => $user->gender,
+                'email'    => $user->email,
+                'identity' => $user->identity,
+            ],
+        ]);
     }
 
-    public function edit(Request $request, string $identity)
+
+    public function update(Request $request, string $identity)
     {
-        if ($request->ajax()) {
-            $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'gender' => [
-                    'required',
-                    Rule::in(['Laki', 'Perempuan'])
-                ],
-                'email' => ['required', 'email', 'max:255'],
-            ]);
-
-            if ($validated) {
-                $user = User::where('identity', $identity)->first();
-                if ($user->email == $request['email']) {
-                    $userEdit = $user->update([
-                        'name' => $request['name'],
-                        'role' => 'Admin',
-                        'gender' => $request['gender'],
-                        'identity' => Str::random(10)
-                    ]);
-                } else {
-                    $userEdit = $user->update([
-                        'name' => $request['name'],
-                        'role' => 'Admin',
-                        'gender' => $request['gender'],
-                        'email' => $request['email'],
-                        'identity' => Str::random(10)
-                    ]);
-                }
-
-                if ($userEdit) {
-                    $data = [
-                        'status' => 'success',
-                        'message' => 'Berhasil menambah data'
-                    ];
-                    return response()->json($data);
-                }
-            }
+        if (! $request->ajax()) {
+            abort(404);
         }
+
+        $user = User::where('identity', $identity)->firstOrFail();
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+        ]);
+
+        $user->update([
+            'name'   => $validated['name'],
+            'gender' => $validated['gender'],
+            'email'  => $validated['email'],
+            'role'   => 'Admin',
+        ]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data berhasil diperbarui',
+        ]);
     }
+
 
     public function delete(Request $request, string $identity)
     {
         if ($request->ajax()) {
-            $user = User::where('identity', $identity)->first();
-            $userDelete = $user->delete();
-            if ($userDelete) {
-                $data = [
-                    'status' => 'success',
-                    'message' => 'Berhasil hapus data'
-                ];
-                return response()->json($data);
-            }
+            $user = User::where('identity', $identity)->firstOrFail();
+            $user->delete();
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Data berhasil dihapus',
+            ]);
         }
     }
 }

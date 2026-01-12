@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Middleware\hasRole;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PatientController;
@@ -50,9 +51,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dasbor', [DashboardController::class, 'index'])
         ->name('dashboard.index');
 
-    Route::prefix('manajemen')
+    Route::middleware(['auth', 'hasRole:Admin'])
+        ->prefix('manajemen')
         ->name('management.')
-        ->group(function (): void {
+        ->group(function () {
 
             /*
             |--------------------------------------------------------------------------
@@ -134,29 +136,21 @@ Route::group(['middleware' => 'auth'], function () {
                         ->name('delete');
                 });
         });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Artisan
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['auth', 'hasRole:Admin'])
+        ->prefix('artisan')
+        ->name('artisan.')
+        ->group(function () {
+
+            Route::get('/migrate', [ArtisanController::class, 'index']);
+            Route::get('/migrate-fresh', [ArtisanController::class, 'fresh']);
+            Route::get('/migrate-fresh-seed', [ArtisanController::class, 'freshSeed']);
+            Route::get('/config-clear', [ArtisanController::class, 'configClear']);
+            Route::get('/config-cache', [ArtisanController::class, 'configCache']);
+        });
 });
-
-
-/*
-|--------------------------------------------------------------------------
-| Artisan
-|--------------------------------------------------------------------------
-*/
-Route::prefix('artisan')
-    ->name('artisan.')
-    ->group(function (): void {
-        Route::get('/migrate', [ArtisanController::class, 'index'])
-            ->name('index');
-
-        Route::get('/migrate-fresh', [ArtisanController::class, 'fresh'])
-            ->name('fresh');
-
-        Route::get('/migrate-fresh-seed', [ArtisanController::class, 'freshSeed'])
-            ->name('fresh.seed');
-
-        Route::get('/config-clear', [ArtisanController::class, 'configClear'])
-            ->name('config.clear');
-
-            Route::get('/config-cache', [ArtisanController::class, 'configCache'])
-            ->name('config.cache');
-    });
