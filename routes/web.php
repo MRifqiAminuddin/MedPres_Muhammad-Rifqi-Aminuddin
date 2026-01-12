@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\hasRole;
+use App\Http\Middleware\HasRole;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dasbor', [DashboardController::class, 'index'])
         ->name('dashboard.index');
 
-    Route::middleware(['auth', 'hasRole:Admin'])
+    Route::middleware(['auth', HasRole::class . ':Admin'])
         ->prefix('manajemen')
         ->name('management.')
         ->group(function () {
@@ -142,7 +142,7 @@ Route::group(['middleware' => 'auth'], function () {
     | Artisan
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth', 'hasRole:Admin'])
+    Route::middleware(['auth', HasRole::class . ':Admin'])
         ->prefix('artisan')
         ->name('artisan.')
         ->group(function () {

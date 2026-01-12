@@ -36,5 +36,25 @@ class PharmachistsSeeder extends Seeder
                 'identity' => Str::random(10),
             ]);
         }
+
+        $user = User::create([
+            'name' => 'apt. Rani Murbiti, S.Farm',
+            'role' => 'Apoteker',
+            'gender' => 'Perempuan',
+            'email' => 'apt.rani@gmail.com',
+            'password' => bcrypt('12345678'),
+            'activation' => true,
+            'identity' => Str::random(10),
+        ]);
+
+        $user->pharmacist()->create([
+            'str_number' => sprintf(
+                'STRA-%04d-202%d-%07d',
+                rand(1000, 9999),
+                rand(0, 4),
+                rand(1000000, 9999999)
+            ),
+            'identity' => Str::random(10),
+        ]);
     }
 }

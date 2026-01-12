@@ -35,8 +35,7 @@
                     href="{{ route('dashboard.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fa-xl fa-solid fa-store ps-2 pe-2 text-center text-dark"
+                        <i style="font-size: 1rem;" class="fa-xl fa-solid fa-store ps-2 pe-2 text-center text-dark"
                             aria-hidden="true">
                         </i>
                     </div>
@@ -44,55 +43,62 @@
                 </a>
             </li>
 
-            <li class="nav-item mt-3 mb-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Manajemen</h6>
-            </li>
-            <li class="nav-item">
-                <a id="menuDokter" class="nav-link {{ Request::routeIs('management.admin.index') ? 'active' : '' }}"
-                    href="{{ route('management.admin.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fa-solid fa-lg fa-user-lock ps-2 pe-2 text-center text-dark"
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Admin</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a id="menuDokter" class="nav-link {{ Request::routeIs('management.doctor.index') ? 'active' : '' }}"
-                    href="{{ route('management.doctor.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fa-solid fa-lg fa-user-doctor-hair ps-2 pe-2 text-center text-dark"
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Dokter</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a id="#" class="nav-link {{ Request::routeIs('management.pharmacist.index') ? 'active' : '' }}" href="{{ route('management.pharmacist.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa-solid fa-lg fa-mortar-pestle ps-2 pe-2 text-center text-dark"
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Apoteker</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a id="menuDepartment" class="nav-link {{ Request::routeIs('management.patient.index') ? 'active' : '' }}"
-                    href="{{ route('management.patient.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa-solid fa-lg fa-hospital-user ps-2 pe-2 text-center text-dark"
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Pasien</span>
-                </a>
-            </li>
-            {{-- @endif --}}
+            @if (auth()->user()->hasRole('Admin'))
+                <li class="nav-item mt-3 mb-2">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Manajemen</h6>
+                </li>
+                <li class="nav-item">
+                    <a id="menuDokter" class="nav-link {{ Request::routeIs('management.admin.index') ? 'active' : '' }}"
+                        href="{{ route('management.admin.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fa-solid fa-lg fa-user-lock ps-2 pe-2 text-center text-dark"
+                                aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Admin</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="menuDokter"
+                        class="nav-link {{ Request::routeIs('management.doctor.index') ? 'active' : '' }}"
+                        href="{{ route('management.doctor.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fa-solid fa-lg fa-user-doctor-hair ps-2 pe-2 text-center text-dark"
+                                aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dokter</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="menuApoteker"
+                        class="nav-link {{ Request::routeIs('management.pharmacist.index') ? 'active' : '' }}"
+                        href="{{ route('management.pharmacist.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fa-solid fa-lg fa-mortar-pestle ps-2 pe-2 text-center text-dark"
+                                aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Apoteker</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="menuPasien"
+                        class="nav-link {{ Request::routeIs('management.patient.index') ? 'active' : '' }}"
+                        href="{{ route('management.patient.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fa-solid fa-lg fa-hospital-user ps-2 pe-2 text-center text-dark"
+                                aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Pasien</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
 </aside>
