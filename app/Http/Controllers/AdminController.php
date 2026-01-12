@@ -6,21 +6,21 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
-use App\Models\Patient;
+use App\Models\User;
 
-class PatientController extends Controller
+class AdminController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(Patient::select('id', 'name', 'email', 'gender', 'identity')->where('role', 'Apoteker')->orderBy('id', 'asc')->get())
-                ->addColumn('action', function (Patient $patient) {
+            return DataTables::of(User::select('id', 'name', 'email', 'gender', 'identity')->where('role', 'Admin')->orderBy('id', 'asc')->get())
+                ->addColumn('action', function (User $user) {
                     return '
                     <center>
-                        <button class="btn bg-gradient-success" style="margin-bottom:0px!important; padding:10px!important" onclick="showEdit(\'' . $patient->identity . '\')" >
+                        <button class="btn bg-gradient-success" style="margin-bottom:0px!important; padding:10px!important" onclick="showEdit(\'' . $user->identity . '\')" >
                             <i class="fa-solid fa-pencil text-white"></i>
                         </button>
-                        <button class="btn bg-gradient-danger" style="margin-bottom:0px!important; padding:10px!important" onclick="alertDelete(\'' . $patient->name . '\',\'' . $patient->identity . '\')" >
+                        <button class="btn bg-gradient-danger" style="margin-bottom:0px!important; padding:10px!important" onclick="alertDelete(\'' . $user->name . '\',\'' . $user->identity . '\')" >
                             <i class="fa-solid fa-trash text-white"></i>
                         </button>
                     </center>
@@ -29,7 +29,7 @@ class PatientController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('management.pharmacist');
+        return view('management.admin');
     }
 
     public function store(Request $request)
@@ -41,24 +41,18 @@ class PatientController extends Controller
                 Rule::in(['Laki', 'Perempuan'])
             ],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'strNumber' => ['required', 'string', 'max:100'],
         ]);
 
         if ($validated) {
             $user = User::create([
                 'name' => $request['name'],
-                'role' => 'Apoteker',
+                'role' => 'Admin',
                 'gender' => $request['gender'],
                 'email' => $request['email'],
                 'identity' => Str::random(10)
             ]);
 
-            $pharmacist = $user->pharmacist()->create([
-                'str_number' => $request['strNumber'],
-                'identity' => Str::random(10)
-            ]);
-
-            if ($pharmacist) {
+            if ($user) {
                 $data = [
                     'status' => 'success',
                     'message' => 'Berhasil menambah data'
@@ -80,7 +74,6 @@ class PatientController extends Controller
                         'name' => $user->name,
                         'gender' => $user->gender,
                         'email' => $user->email,
-                        'str_number' => $user->pharmacist->str_number,
                         'identity' => $user->identity
                     ]
                 ];
@@ -99,7 +92,6 @@ class PatientController extends Controller
                     Rule::in(['Laki', 'Perempuan'])
                 ],
                 'email' => ['required', 'email', 'max:255'],
-                'strNumber' => ['required', 'string', 'max:100'],
             ]);
 
             if ($validated) {
@@ -107,26 +99,21 @@ class PatientController extends Controller
                 if ($user->email == $request['email']) {
                     $userEdit = $user->update([
                         'name' => $request['name'],
-                        'role' => 'Apoteker',
+                        'role' => 'Admin',
                         'gender' => $request['gender'],
                         'identity' => Str::random(10)
                     ]);
                 } else {
                     $userEdit = $user->update([
                         'name' => $request['name'],
-                        'role' => 'Apoteker',
+                        'role' => 'Admin',
                         'gender' => $request['gender'],
                         'email' => $request['email'],
                         'identity' => Str::random(10)
                     ]);
                 }
 
-                $pharmacist = $user->pharmacist()->update([
-                    'str_number' => $request['strNumber'],
-                    'identity' => Str::random(10)
-                ]);
-
-                if ($pharmacist && $userEdit) {
+                if ($userEdit) {
                     $data = [
                         'status' => 'success',
                         'message' => 'Berhasil menambah data'
@@ -141,9 +128,8 @@ class PatientController extends Controller
     {
         if ($request->ajax()) {
             $user = User::where('identity', $identity)->first();
-            $pharmacistDelete = $user->pharmacist()->delete();
             $userDelete = $user->delete();
-            if ($userDelete && $pharmacistDelete) {
+            if ($userDelete) {
                 $data = [
                     'status' => 'success',
                     'message' => 'Berhasil hapus data'

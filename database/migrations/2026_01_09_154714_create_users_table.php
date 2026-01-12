@@ -17,9 +17,9 @@ return new class extends Migration
             $table->enum('role', ['Dokter', 'Apoteker', 'Admin']);
             $table->enum('gender', ['Laki', 'Perempuan']);
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->boolean('activation')->default(false);
-            $table->string('identity', 12);
+            $table->string('identity', 12)->unique();
             $table->timestamps();
         });
 

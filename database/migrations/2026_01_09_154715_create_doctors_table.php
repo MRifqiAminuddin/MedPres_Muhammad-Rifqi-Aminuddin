@@ -41,7 +41,7 @@ return new class extends Migration {
                 'THT',
                 'Tumbuh Kembang',
             ]);
-            $table->string('identity', 12);
+            $table->string('identity', 12)->unique();
             $table->timestamps();
         });
     }

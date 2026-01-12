@@ -30,13 +30,14 @@
         <script>
             function alertDelete(text, identity) {
                 Swal.fire({
-                    title: "Please Confirm!",
-                    html: "Do you want to delete data with the name <b>" + text + "</b>?",
+                    title: "Konfirmasi Segera!",
+                    html: "Apakah Anda ingin menghapus data milik <b>" + text + "</b>?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
+                    cancelButtonText: "Tidak",
+                    confirmButtonText: "Ya, hapus!"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         deleteData(text, identity);
@@ -44,27 +45,29 @@
                 });
             }
 
-            function confirm(name, text, identity, fNew) {
+            function showConfirm(name, identity, text, callback) {
                 Swal.fire({
-                    title: "Please Confirm!",
+                    title: 'Konfirmasi!',
                     html: text,
-                    icon: "warning",
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes"
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Tidak',
+                    confirmButtonText: 'Ya',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        fNew(name, identity);
+                        callback(name, identity);
                     }
                 });
             }
+
 
             function success(text) {
                 let timerInterval;
                 Swal.fire({
                     icon: "success",
-                    title: "Success!",
+                    title: "Berhasil!",
                     html: text,
                     timer: 2000,
                     timerProgressBar: false,
@@ -81,7 +84,7 @@
                 let timerInterval;
                 Swal.fire({
                     icon: "error",
-                    title: "I'm Sorry!",
+                    title: "Mohon maaf!",
                     html: text,
                     timer: 2000,
                     timerProgressBar: false,

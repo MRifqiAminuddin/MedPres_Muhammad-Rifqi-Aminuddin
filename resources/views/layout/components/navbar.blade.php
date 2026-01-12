@@ -4,40 +4,25 @@
     <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                {{-- <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li> --}}
-                <li class="breadcrumb-item text-sm text-sm active text-capitalize" aria-current="page">Pages</li>
+                <li class="breadcrumb-item text-sm text-sm active text-capitalize" aria-current="page">Halaman</li>
             </ol>
             <h6 class="font-weight-bolder mb-0 text-capitalize">{{ str_replace('-', ' ', Request::path()) }}</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 d-flex justify-content-end" id="navbar">
-            {{-- <div class="ms-md-3 pe-md-3 d-flex align-items-center">
-                <div class="input-group">
-                    <span class="input-group-text text-body"><i class="fa-solid fa-search" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" placeholder="Type here...">
-                </div>
-            </div> --}}
             <ul class="navbar-nav justify-content-end">
-                {{-- <li class="nav-item d-flex align-items-center row px-2" style="text-align: right!important">
-                    <span class="col-12 breadcrumb-item text-sm text-sm active text-capitalize">
-                        {{ Auth::user()->role->name }}
-                    </span>
-                    <span class="col-12 font-weight-bolder text-capitalize" style="color: #344767!important">
-                        {{ Auth::user()->gender == 'Male' ? 'Mr. ' : 'Mrs. ' }}{{ Auth::user()->name }}
-                    </span>
-                </li> --}}
                 <li class="nav-item d-flex align-items-center dropdown ps-2">
                     <a href="javascript:void(0)"
                         class="dropdown-toggle d-flex align-items-center justify-content-between" id="dropdownMenuLink"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="row text-end me-1">
                             <span class="col-12 breadcrumb-item text-sm active text-capitalize">
-                                {{-- {{ Auth::user()->role->name }} --}} Dokter
+                                {{ Auth::user()->role }}
                             </span>
                             <span class="col-12 font-weight-bolder text-capitalize" style="color: #344767!important">
-                                {{-- {{ Auth::user()->gender == 'Male' ? 'Mr. ' : 'Mrs. ' }}{{ Auth::user()->name }} --}} Mr Budi
+                                {{ Auth::user()->gender == 'Male' ? 'Bapak ' : 'Ibu ' }}{{ Auth::user()->name }}
                             </span>
                         </div>
-                        <i class="fa-solid fa-user-doctor-hair"></i>
+                        <i class="fa-solid {{ Auth::user()->role_icon }}"></i>
                     </a>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">

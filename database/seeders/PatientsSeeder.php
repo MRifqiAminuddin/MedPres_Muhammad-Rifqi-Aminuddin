@@ -17,22 +17,27 @@ class PatientsSeeder extends Seeder
             [
                 'name' => 'Ahmad Prasetyo',
                 'birth_date' => '1990-04-12',
+                'gender' => 'Laki'
             ],
             [
                 'name' => 'Siti Aisyah Rahma',
                 'birth_date' => '1985-09-23',
+                'gender' => 'Perempuan'
             ],
             [
                 'name' => 'Budi Santoso',
                 'birth_date' => '1978-01-05',
+                'gender' => 'Laki'
             ],
             [
                 'name' => 'Dewi Lestari',
                 'birth_date' => '1995-12-30',
+                'gender' => 'Perempuan'
             ],
             [
                 'name' => 'Rizky Maulana',
                 'birth_date' => '2001-07-18',
+                'gender' => 'Laki'
             ],
         ];
 
@@ -40,6 +45,7 @@ class PatientsSeeder extends Seeder
             Patient::create([
                 'name' => $data['name'],
                 'birth_date' => $data['birth_date'],
+                'gender' => $data['gender'],
                 'identity' => Str::random(10)
             ]);
         }

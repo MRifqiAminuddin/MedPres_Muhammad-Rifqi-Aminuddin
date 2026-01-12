@@ -32,7 +32,7 @@
             </li>
             <li class="nav-item">
                 <a id="menuDashboard" class="nav-link {{ Request::routeIs('dashboard.index') ? 'active' : '' }}"
-                    href="#">
+                    href="{{ route('dashboard.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
@@ -48,6 +48,18 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Manajemen</h6>
             </li>
             <li class="nav-item">
+                <a id="menuDokter" class="nav-link {{ Request::routeIs('management.admin.index') ? 'active' : '' }}"
+                    href="{{ route('management.admin.index') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fa-solid fa-lg fa-user-lock ps-2 pe-2 text-center text-dark"
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Admin</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a id="menuDokter" class="nav-link {{ Request::routeIs('management.doctor.index') ? 'active' : '' }}"
                     href="{{ route('management.doctor.index') }}">
                     <div
@@ -60,7 +72,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a id="#" class="nav-link {{ Request::routeIs('dashboard.index') ? 'active' : '' }}" href="#">
+                <a id="#" class="nav-link {{ Request::routeIs('management.pharmacist.index') ? 'active' : '' }}" href="{{ route('management.pharmacist.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="fa-solid fa-lg fa-mortar-pestle ps-2 pe-2 text-center text-dark"

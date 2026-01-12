@@ -15,6 +15,7 @@ class Encounter extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'doctor_id',
         'patient_id',
         'body_height',
         'body_weight',
@@ -44,5 +45,10 @@ class Encounter extends Model
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');
+    }
+
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(Doctor::class, 'doctor_id', 'id');
     }
 }

@@ -3,57 +3,37 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 class PharmachistsSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $users = [
-            [
-                'name' => 'apt. Rina Oktaviani, S.Farm',
-                'gender' => 'Perempuan',
-                'email' => 'rina.apt@gmail.com',
-                'str_number' => 'STRA-3274-2019-0004821',
-            ],
-            [
-                'name' => 'apt. Dimas Pratama, S.Farm',
-                'gender' => 'Laki',
-                'email' => 'dimas.apt@gmail.com',
-                'str_number' => 'STRA-3312-2020-0007392',
-            ],
-            [
-                'name' => 'apt. Siti Nurhaliza, S.Farm',
-                'gender' => 'Perempuan',
-                'email' => 'siti.apt@gmail.com',
-                'str_number' => 'STRA-3506-2021-0006154',
-            ],
-            [
-                'name' => 'apt. Ahmad Fauzan, S.Farm',
-                'gender' => 'Laki',
-                'email' => 'ahmad.apt@gmail.com',
-                'str_number' => 'STRA-3171-2018-0002987',
-            ],
-        ];
+        $faker = Faker::create('id_ID');
 
-        foreach ($users as $data) {
+        for ($i = 1; $i <= 20; $i++) {
+            $gender = $faker->randomElement(['Laki', 'Perempuan']);
+
             $user = User::create([
-                'name' => $data['name'],
+                'name' => 'apt. ' . $faker->name($gender === 'Laki' ? 'male' : 'female') . ', S.Farm',
                 'role' => 'Apoteker',
-                'gender' => $data['gender'],
-                'email' => $data['email'],
+                'gender' => $gender,
+                'email' => $faker->unique()->safeEmail(),
                 'password' => bcrypt('12345678'),
                 'activation' => true,
-                'identity' => Str::random(10)
+                'identity' => Str::random(10),
             ]);
 
-            $user->pharmacists()->create([
-                'str_number' => $data['str_number'],
-                'identity' => Str::random(10)
+            $user->pharmacist()->create([
+                'str_number' => sprintf(
+                    'STRA-%04d-202%d-%07d',
+                    rand(1000, 9999),
+                    rand(0, 4),
+                    rand(1000000, 9999999)
+                ),
+                'identity' => Str::random(10),
             ]);
         }
     }

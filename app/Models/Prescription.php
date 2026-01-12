@@ -9,21 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Prescription extends Model
 {
     protected $fillable = [
-        'user_id',
-        'patient_id',
+        'encounter_id',
         'status',
         'prescription_date',
         'identity'
     ];
 
-    public function user(): BelongsTo
+    public function encounter(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    public function patient(): BelongsTo
-    {
-        return $this->belongsTo(Patient::class, 'patient_id', 'id');
+        return $this->belongsTo(Encounter::class, 'encounter_id', 'id');
     }
 
     public function prescriptionMedicines(): HasMany

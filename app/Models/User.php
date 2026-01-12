@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -49,14 +49,24 @@ class User extends Authenticatable
         ];
     }
 
-    public function doctors(): HasMany
+    public function getRoleIconAttribute(): string
     {
-        return $this->hasMany(Doctor::class, 'user_id', 'id');
+        return match ($this->role) {
+            'Admin' => 'fa-user-lock',
+            'Dokter' => 'fa-user-doctor-hair',
+            'Apoteker' => 'fa-mortar-pestle',
+            default => 'fa-user',
+        };
     }
 
-    public function pharmacists(): HasMany
+    public function doctor(): HasOne
     {
-        return $this->hasMany(Pharmacist::class, 'user_id', 'id');
+        return $this->hasOne(Doctor::class, 'user_id', 'id');
+    }
+
+    public function pharmacist(): HasOne
+    {
+        return $this->hasOne(Pharmacist::class, 'user_id', 'id');
     }
 
 }

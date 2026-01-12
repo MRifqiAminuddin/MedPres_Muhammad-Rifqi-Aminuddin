@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('status', ['Diberikan', 'Tidak Diberikan'])->nullable();
             $table->timestamps();
             $table->index('medicine_id');
-            $table->string('identity', 12);
+            $table->string('identity', 12)->unique();
         });
 
     }

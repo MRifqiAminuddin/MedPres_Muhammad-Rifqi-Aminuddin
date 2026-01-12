@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('encounters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('doctor_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->foreignId('patient_id')
                 ->constrained()
                 ->cascadeOnDelete();
@@ -27,7 +30,7 @@ return new class extends Migration
             $table->text('diagnosis');
             $table->string('other_document')->nullable();
             $table->date('encounter_date');
-            $table->string('identity', 12);
+            $table->string('identity', 12)->unique();
             $table->timestamps();
         });
     }

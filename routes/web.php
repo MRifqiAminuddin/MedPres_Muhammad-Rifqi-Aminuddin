@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MigrationController;
+use App\Http\Controllers\PharmacistController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +51,66 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('manajemen')
         ->name('management.')
         ->group(function (): void {
-            Route::get('/dokter', [DoctorController::class, 'index'])
-                ->name('doctor.index');
+
+            /*
+            |--------------------------------------------------------------------------
+            | Manajemen Admin
+            |--------------------------------------------------------------------------
+            */
+            Route::prefix('admin')
+                ->name('admin.')
+                ->group(function (): void {
+                    Route::get('/', [AdminController::class, 'index'])
+                        ->name('index');
+                    Route::post('/', [AdminController::class, 'store'])
+                        ->name('store');
+                    Route::post('/show/{identity}', [AdminController::class, 'show'])
+                        ->name('show');
+                    Route::post('/edit/{identity}', [AdminController::class, 'edit'])
+                        ->name('edit');
+                    Route::post('/delete/{identity}', [AdminController::class, 'delete'])
+                        ->name('delete');
+                });
+
+            /*
+            |--------------------------------------------------------------------------
+            | Manajemen Dokter
+            |--------------------------------------------------------------------------
+            */
+            Route::prefix('dokter')
+                ->name('doctor.')
+                ->group(function (): void {
+                    Route::get('/', [DoctorController::class, 'index'])
+                        ->name('index');
+                    Route::post('/', [DoctorController::class, 'store'])
+                        ->name('store');
+                    Route::post('/show/{identity}', [DoctorController::class, 'show'])
+                        ->name('show');
+                    Route::post('/edit/{identity}', [DoctorController::class, 'edit'])
+                        ->name('edit');
+                    Route::post('/delete/{identity}', [DoctorController::class, 'delete'])
+                        ->name('delete');
+                });
+
+            /*
+            |--------------------------------------------------------------------------
+            | Manajemen Apoteker
+            |--------------------------------------------------------------------------
+            */
+            Route::prefix('Apoteker')
+                ->name('pharmacist.')
+                ->group(function (): void {
+                    Route::get('/', [PharmacistController::class, 'index'])
+                        ->name('index');
+                    Route::post('/', [PharmacistController::class, 'store'])
+                        ->name('store');
+                    Route::post('/show/{identity}', [PharmacistController::class, 'show'])
+                        ->name('show');
+                    Route::post('/edit/{identity}', [PharmacistController::class, 'edit'])
+                        ->name('edit');
+                    Route::post('/delete/{identity}', [PharmacistController::class, 'delete'])
+                        ->name('delete');
+                });
         });
 });
 

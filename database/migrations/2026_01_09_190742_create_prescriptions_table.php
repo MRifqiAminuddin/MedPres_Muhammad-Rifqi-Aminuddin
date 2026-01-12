@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete();
-            $table->foreignId('patient_id')
+            $table->foreignId('encounter_id')
                 ->constrained()
                 ->cascadeOnDelete();
             $table->enum('status', ['Belum', 'Menunggu', 'Sudah'])->default('Belum');
             $table->date('prescription_date');
-            $table->string('identity', 12);
+            $table->string('identity', 12)->unique();
             $table->timestamps();
         });
     }
