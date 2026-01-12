@@ -44,9 +44,7 @@ class ArtisanController extends Controller
     {
         $this->ensureAllowedEnvironment();
 
-        Artisan::call('config:clear', [
-            '--force' => true,
-        ]);
+        Artisan::call('config:clear', []);
 
         return $this->artisanResponse();
     }
@@ -55,9 +53,7 @@ class ArtisanController extends Controller
     {
         $this->ensureAllowedEnvironment();
 
-        Artisan::call('config:cache', [
-            '--force' => true,
-        ]);
+        Artisan::call('config:cache', []);
 
         return $this->artisanResponse();
     }
