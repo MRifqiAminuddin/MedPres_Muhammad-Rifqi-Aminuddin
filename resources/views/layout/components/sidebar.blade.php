@@ -82,8 +82,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a id="menuDepartment" class="nav-link {{ Request::routeIs('dashboard.index') ? 'active' : '' }}"
-                    href="#">
+                <a id="menuDepartment" class="nav-link {{ Request::routeIs('management.patient.index') ? 'active' : '' }}"
+                    href="{{ route('management.patient.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="fa-solid fa-lg fa-hospital-user ps-2 pe-2 text-center text-dark"

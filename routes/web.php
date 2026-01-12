@@ -7,6 +7,8 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ArtisanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,8 +68,8 @@ Route::group(['middleware' => 'auth'], function () {
                         ->name('store');
                     Route::post('/show/{identity}', [AdminController::class, 'show'])
                         ->name('show');
-                    Route::post('/edit/{identity}', [AdminController::class, 'edit'])
-                        ->name('edit');
+                    Route::post('/edit/{identity}', [AdminController::class, 'update'])
+                        ->name('update');
                     Route::post('/delete/{identity}', [AdminController::class, 'delete'])
                         ->name('delete');
                 });
@@ -86,8 +88,8 @@ Route::group(['middleware' => 'auth'], function () {
                         ->name('store');
                     Route::post('/show/{identity}', [DoctorController::class, 'show'])
                         ->name('show');
-                    Route::post('/edit/{identity}', [DoctorController::class, 'edit'])
-                        ->name('edit');
+                    Route::post('/edit/{identity}', [DoctorController::class, 'update'])
+                        ->name('update');
                     Route::post('/delete/{identity}', [DoctorController::class, 'delete'])
                         ->name('delete');
                 });
@@ -106,9 +108,29 @@ Route::group(['middleware' => 'auth'], function () {
                         ->name('store');
                     Route::post('/show/{identity}', [PharmacistController::class, 'show'])
                         ->name('show');
-                    Route::post('/edit/{identity}', [PharmacistController::class, 'edit'])
-                        ->name('edit');
+                    Route::post('/edit/{identity}', [PharmacistController::class, 'update'])
+                        ->name('update');
                     Route::post('/delete/{identity}', [PharmacistController::class, 'delete'])
+                        ->name('delete');
+                });
+
+            /*
+            |--------------------------------------------------------------------------
+            | Manajemen Pasien
+            |--------------------------------------------------------------------------
+            */
+            Route::prefix('Pasien')
+                ->name('patient.')
+                ->group(function (): void {
+                    Route::get('/', [PatientController::class, 'index'])
+                        ->name('index');
+                    Route::post('/', [PatientController::class, 'store'])
+                        ->name('store');
+                    Route::post('/show/{identity}', [PatientController::class, 'show'])
+                        ->name('show');
+                    Route::post('/edit/{identity}', [PatientController::class, 'update'])
+                        ->name('update');
+                    Route::post('/delete/{identity}', [PatientController::class, 'delete'])
                         ->name('delete');
                 });
         });
@@ -117,18 +139,24 @@ Route::group(['middleware' => 'auth'], function () {
 
 /*
 |--------------------------------------------------------------------------
-| Migration
+| Artisan
 |--------------------------------------------------------------------------
 */
-Route::prefix('migration')
-    ->name('migration.')
+Route::prefix('artisan')
+    ->name('artisan.')
     ->group(function (): void {
-        Route::get('/', [MigrationController::class, 'index'])
+        Route::get('/migrate', [ArtisanController::class, 'index'])
             ->name('index');
 
-        Route::get('fresh', [MigrationController::class, 'fresh'])
+        Route::get('/migrate-fresh', [ArtisanController::class, 'fresh'])
             ->name('fresh');
 
-        Route::get('fresh-seed', [MigrationController::class, 'freshSeed'])
+        Route::get('/migrate-fresh-seed', [ArtisanController::class, 'freshSeed'])
             ->name('fresh.seed');
+
+        Route::get('/config-clear', [ArtisanController::class, 'configClear'])
+            ->name('config.clear');
+
+            Route::get('/config-cache', [ArtisanController::class, 'configCache'])
+            ->name('config.cache');
     });

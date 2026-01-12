@@ -13,75 +13,56 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(Patient::select('id', 'name', 'email', 'gender', 'identity')->where('role', 'Apoteker')->orderBy('id', 'asc')->get())
+            return DataTables::of(
+                Patient::select('id', 'name', 'birth_date', 'gender', 'identity')->orderBy('id')
+            )
                 ->addColumn('action', function (Patient $patient) {
-                    return '
-                    <center>
-                        <button class="btn bg-gradient-success" style="margin-bottom:0px!important; padding:10px!important" onclick="showEdit(\'' . $patient->identity . '\')" >
-                            <i class="fa-solid fa-pencil text-white"></i>
-                        </button>
-                        <button class="btn bg-gradient-danger" style="margin-bottom:0px!important; padding:10px!important" onclick="alertDelete(\'' . $patient->name . '\',\'' . $patient->identity . '\')" >
-                            <i class="fa-solid fa-trash text-white"></i>
-                        </button>
-                    </center>
-                ';
+                    return view('layout.components.action', [
+                        'name' => $patient->name,
+                        'identity' => $patient->identity,
+                    ])->render();
                 })
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('management.pharmacist');
+
+        return view('management.patient');
     }
+
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'gender' => [
-                'required',
-                Rule::in(['Laki', 'Perempuan'])
-            ],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'strNumber' => ['required', 'string', 'max:100'],
+            'name' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
         ]);
 
-        if ($validated) {
-            $user = User::create([
-                'name' => $request['name'],
-                'role' => 'Apoteker',
-                'gender' => $request['gender'],
-                'email' => $request['email'],
-                'identity' => Str::random(10)
-            ]);
+        Patient::create([
+            ...$validated,
+            'identity' => Str::random(10),
+        ]);
 
-            $pharmacist = $user->pharmacist()->create([
-                'str_number' => $request['strNumber'],
-                'identity' => Str::random(10)
-            ]);
-
-            if ($pharmacist) {
-                $data = [
-                    'status' => 'success',
-                    'message' => 'Berhasil menambah data'
-                ];
-                return response()->json($data);
-            }
-        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Berhasil menambah data',
+        ]);
     }
+
 
     public function show(Request $request, string $identity)
     {
         if ($request->ajax()) {
-            $user = User::select('id', 'name', 'email', 'gender', 'identity')->where('identity', $identity)->first();
-            if ($user) {
+            $patient = Patient::select('id', 'name', 'birth_date', 'gender', 'identity')->where('identity', $identity)->first();
+            if ($patient) {
                 $data = [
                     'status' => 'success',
                     'message' => 'Data berhasil ditemukan',
                     'data' => [
-                        'name' => $user->name,
-                        'gender' => $user->gender,
-                        'email' => $user->email,
-                        'str_number' => $user->pharmacist->str_number,
-                        'identity' => $user->identity
+                        'name' => $patient->name,
+                        'birth_date' => $patient->birth_date,
+                        'gender' => $patient->gender,
+                        'identity' => $patient->identity
                     ]
                 ];
                 return response()->json($data);
@@ -89,61 +70,32 @@ class PatientController extends Controller
         }
     }
 
-    public function edit(Request $request, string $identity)
+    public function update(Request $request, string $identity)
     {
-        if ($request->ajax()) {
-            $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'gender' => [
-                    'required',
-                    Rule::in(['Laki', 'Perempuan'])
-                ],
-                'email' => ['required', 'email', 'max:255'],
-                'strNumber' => ['required', 'string', 'max:100'],
-            ]);
+        abort_if(!$request->ajax(), 404);
 
-            if ($validated) {
-                $user = User::where('identity', $identity)->first();
-                if ($user->email == $request['email']) {
-                    $userEdit = $user->update([
-                        'name' => $request['name'],
-                        'role' => 'Apoteker',
-                        'gender' => $request['gender'],
-                        'identity' => Str::random(10)
-                    ]);
-                } else {
-                    $userEdit = $user->update([
-                        'name' => $request['name'],
-                        'role' => 'Apoteker',
-                        'gender' => $request['gender'],
-                        'email' => $request['email'],
-                        'identity' => Str::random(10)
-                    ]);
-                }
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
+        ]);
 
-                $pharmacist = $user->pharmacist()->update([
-                    'str_number' => $request['strNumber'],
-                    'identity' => Str::random(10)
-                ]);
+        $patient = Patient::where('identity', $identity)->firstOrFail();
+        $patient->update($validated);
 
-                if ($pharmacist && $userEdit) {
-                    $data = [
-                        'status' => 'success',
-                        'message' => 'Berhasil menambah data'
-                    ];
-                    return response()->json($data);
-                }
-            }
-        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Berhasil memperbarui data',
+        ]);
     }
+
 
     public function delete(Request $request, string $identity)
     {
         if ($request->ajax()) {
-            $user = User::where('identity', $identity)->first();
-            $pharmacistDelete = $user->pharmacist()->delete();
-            $userDelete = $user->delete();
-            if ($userDelete && $pharmacistDelete) {
+            $patient = Patient::where('identity', $identity)->first();
+            $patientDelete = $patient->delete();
+            if ($patientDelete) {
                 $data = [
                     'status' => 'success',
                     'message' => 'Berhasil hapus data'

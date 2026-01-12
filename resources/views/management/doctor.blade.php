@@ -353,7 +353,7 @@
 
             // Kirim data ke server dengan AJAX
             $.ajax({
-                url: "{{ route('management.doctor.edit', 'harusGanti') }}".replace('harusGanti', identity),
+                url: "{{ route('management.doctor.update', 'harusGanti') }}".replace('harusGanti', identity),
                 type: 'POST',
                 data: formData,
                 success: function(response) {

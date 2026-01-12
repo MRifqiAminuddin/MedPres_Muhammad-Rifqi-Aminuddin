@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Artisan;
 
-class MigrationController extends Controller
+class ArtisanController extends Controller
 {
     public function index()
     {
@@ -34,6 +34,28 @@ class MigrationController extends Controller
 
         Artisan::call('migrate:fresh', [
             '--seed'  => true,
+            '--force' => true,
+        ]);
+
+        return $this->artisanResponse();
+    }
+
+    public function configClear()
+    {
+        $this->ensureAllowedEnvironment();
+
+        Artisan::call('config:clear', [
+            '--force' => true,
+        ]);
+
+        return $this->artisanResponse();
+    }
+
+    public function configCache()
+    {
+        $this->ensureAllowedEnvironment();
+
+        Artisan::call('config:cache', [
             '--force' => true,
         ]);
 
