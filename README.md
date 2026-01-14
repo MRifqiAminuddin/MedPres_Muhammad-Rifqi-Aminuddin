@@ -1,59 +1,122 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>MedPres - Medical Prescription System</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            color: #333;
+        }
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+        h1, h2, h3 {
+            color: #1a1a1a;
+        }
 
-## About Laravel
+        h1 {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+        ul {
+            margin-left: 20px;
+        }
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+        li {
+            margin-bottom: 8px;
+        }
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+        .section {
+            margin-top: 30px;
+        }
 
-## Learning Laravel
+        .footer {
+            margin-top: 50px;
+            font-style: italic;
+        }
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
 
-## Laravel Sponsors
+    <h1>MedPres – Medical Prescription System</h1>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    <p>
+        <strong>MedPres</strong> adalah aplikasi sistem informasi rumah sakit
+        yang dirancang untuk mengelola proses pemeriksaan pasien, pembuatan resep,
+        serta alur pelayanan antar unit secara terintegrasi dan berbasis role.
+    </p>
 
-### Premium Partners
+    <div class="section">
+        <h2>Tutorial Penggunaan</h2>
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+        <ol>
+            <li>
+                Login menggunakan akun sesuai dengan role yang terdaftar:
+                <strong>Super Admin</strong>, <strong>Admin</strong>,
+                <strong>Dokter</strong>, dan <strong>Apoteker</strong>.
+            </li>
 
-## Contributing
+            <li>
+                <strong>Super Admin</strong> bertugas mengelola seluruh data master
+                rumah sakit, termasuk data pengguna, poli, dan konfigurasi sistem.
+            </li>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+            <li>
+                <strong>Admin</strong> bertugas melakukan screening awal pasien,
+                mengelola tiket berobat, serta mengatur aktivitas unit pelayanan
+                pada masing-masing poli.
+                <br>
+                <em>Catatan:</em> Setiap poli minimal memiliki 1 Admin dan 1 Dokter.
+            </li>
 
-## Code of Conduct
+            <li>
+                <strong>Dokter</strong> bertugas melakukan pemeriksaan pasien,
+                memberikan diagnosa, membuat resep obat, serta menentukan dosis
+                dan aturan pemakaian obat.
+            </li>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+            <li>
+                <strong>Apoteker</strong> bertugas menerima resep dari dokter,
+                menyiapkan dan meracik obat sesuai resep, serta mengonfirmasi
+                proses pembayaran pasien.
+            </li>
 
-## Security Vulnerabilities
+            <li>
+                Setiap role memiliki hak akses dan fitur yang berbeda sesuai
+                dengan tanggung jawab masing-masing.
+            </li>
+        </ol>
+    </div>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    <div class="section">
+        <h2>Demo Aplikasi</h2>
+        <p>
+            Aplikasi MedPres dapat diakses dan diuji coba secara langsung melalui tautan berikut:
+        </p>
+        <p>
+            <a href="https://medpres.mrifqia.my.id/" target="_blank">
+                https://medpres.mrifqia.my.id/
+            </a>
+        </p>
+    </div>
 
-## License
+    <div class="footer">
+        <p>
+            Dikembangkan oleh:<br>
+            <strong>Muhammad Rifqi Aminuddin</strong>
+        </p>
+    </div>
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+</body>
+</html>
