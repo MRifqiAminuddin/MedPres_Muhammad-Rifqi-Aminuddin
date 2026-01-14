@@ -46,6 +46,22 @@
                 </li>
             @endif
 
+            @if (auth()->user()->role == 'Apoteker')
+                <li class="nav-item">
+                    <a id="menuDashboard" class="nav-link {{ Request::routeIs('pharmacy.*') ? 'active' : '' }}"
+                        href="{{ route('pharmacy.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fa-xl fa-solid fa-pills ps-2 pe-2 text-center text-dark"
+                                aria-hidden="true">
+                            </i>
+                        </div>
+                        <span class="nav-link-text ms-1">Farmasi</span>
+                    </a>
+                </li>
+            @endif
+
             @if (auth()->user()->role == 'Admin')
                 <li class="nav-item">
                     <a id="menuDashboard" class="nav-link {{ Request::routeIs('encounter.index') ? 'active' : '' }}"

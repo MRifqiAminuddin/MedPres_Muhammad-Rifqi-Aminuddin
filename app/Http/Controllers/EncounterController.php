@@ -259,8 +259,6 @@ class EncounterController extends Controller
             'status' => 'Periksa',
         ]);
 
-        event(new EncounterUpdated($encounter));
-
         return response()->json([
             'status'  => 'success',
             'message' => 'Aksi panggil pasien berhasil',

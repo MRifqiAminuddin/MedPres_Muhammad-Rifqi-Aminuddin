@@ -33,6 +33,14 @@
             Pilih
         </button>
     </center>
+@elseif(request()->routeIs('pharmacy.index'))
+    <center>
+        <button class="btn bg-gradient-primary"
+            onclick="selectMedicine('{{ $identity }}', '{{ $name }}')">
+            <i class="fa-solid fa-mortar-pestle text-white"></i>
+            Racik Obat
+        </button>
+    </center>
 @else
     <center>
         <button class="btn bg-gradient-success" onclick="showEdit('{{ $identity }}')">

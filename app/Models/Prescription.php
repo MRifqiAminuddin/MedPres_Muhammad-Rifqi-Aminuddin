@@ -10,6 +10,7 @@ class Prescription extends Model
 {
     protected $fillable = [
         'encounter_id',
+        'pharmacist_id',
         'status',
         'prescription_date',
         'identity'
@@ -18,6 +19,11 @@ class Prescription extends Model
     public function encounter(): BelongsTo
     {
         return $this->belongsTo(Encounter::class, 'encounter_id', 'id');
+    }
+
+    public function pharmacist(): BelongsTo
+    {
+        return $this->belongsTo(Pharmacist::class, 'pharmacist_id', 'id');
     }
 
     public function prescriptionMedicines(): HasMany

@@ -18,7 +18,11 @@ class Patient extends Model
         'birth_date',
         'identity'
     ];
-    
+
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
+
     public function encounters(): HasMany
     {
         return $this->hasMany(Encounter::class, 'patient_id', 'id');

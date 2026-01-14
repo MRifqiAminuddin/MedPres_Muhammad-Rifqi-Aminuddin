@@ -16,6 +16,10 @@ return new class extends Migration
             $table->foreignId('encounter_id')
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->foreignId('pharmacist_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
             $table->enum('status', ['Belum', 'Menunggu', 'Sudah'])->default('Belum');
             $table->dateTime('prescription_date');
             $table->string('identity', 12)->unique();

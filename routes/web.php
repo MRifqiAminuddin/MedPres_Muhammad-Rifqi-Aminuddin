@@ -12,6 +12,7 @@ use App\Http\Controllers\Management\PatientController;
 use App\Http\Controllers\ArtisanController;
 use App\Http\Controllers\EncounterController;
 use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\PharmacyController;
 
 // Autentikasi
 Route::name('auth.')
@@ -61,6 +62,29 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/cari-pasien', [EncounterController::class, 'searchPatient'])
                 ->name('search.patient');
             Route::get('/cari-dokter', [EncounterController::class, 'searchDoctor'])
+                ->name('search.doctor');
+        });
+
+    // Farmasi
+    Route::middleware(['auth', HasRole::class . ':Apoteker'])
+        ->prefix('farmasi')
+        ->name('pharmacy.')
+        ->group(function () {
+            Route::get('/', [PharmacyController::class, 'index'])
+                ->name('index');
+            Route::post('/', [PharmacyController::class, 'store'])
+                ->name('store');
+            Route::post('/show/{identity}', [PharmacyController::class, 'show'])
+                ->name('show');
+            Route::post('/update/{identity}', [PharmacyController::class, 'update'])
+                ->name('update');
+            Route::post('/delete/{identity}', [PharmacyController::class, 'delete'])
+                ->name('delete');
+            Route::post('/panggil/{identity}', [PharmacyController::class, 'call'])
+                ->name('call');
+            Route::get('/cari-pasien', [PharmacyController::class, 'searchPatient'])
+                ->name('search.patient');
+            Route::get('/cari-dokter', [PharmacyController::class, 'searchDoctor'])
                 ->name('search.doctor');
         });
 
