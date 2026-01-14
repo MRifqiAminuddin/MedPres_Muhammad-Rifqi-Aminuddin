@@ -1,122 +1,108 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>MedPres - Medical Prescription System</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            margin: 40px;
-            color: #333;
-        }
+<p align="center">
+    <a href="https://medpres.mrifqia.my.id" target="_blank">
+        <img src="https://medpres.mrifqia.my.id/assets/img/logos/medpres.png" width="220" alt="MedPres Logo">
+    </a>
+</p>
 
-        h1, h2, h3 {
-            color: #1a1a1a;
-        }
+<p align="center">
+    <strong>MedPres – Medical Prescription System</strong>
+</p>
 
-        h1 {
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-        }
+<p align="center">
+    Sistem informasi rumah sakit untuk manajemen pemeriksaan pasien dan resep obat berbasis role.
+</p>
 
-        ul {
-            margin-left: 20px;
-        }
+---
 
-        li {
-            margin-bottom: 8px;
-        }
+## About MedPres
 
-        .section {
-            margin-top: 30px;
-        }
+**MedPres** adalah aplikasi berbasis web yang dirancang untuk mendukung alur pelayanan rumah sakit,
+mulai dari pendaftaran pasien, pemeriksaan oleh dokter, pembuatan resep, hingga proses penyiapan
+obat oleh apoteker.
 
-        .footer {
-            margin-top: 50px;
-            font-style: italic;
-        }
+Aplikasi ini menerapkan **role-based access control** sehingga setiap pengguna hanya dapat
+mengakses fitur sesuai dengan tanggung jawabnya.
 
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
+MedPres dikembangkan untuk meningkatkan:
+- Efisiensi pelayanan pasien
+- Akurasi data medis
+- Integrasi antar unit pelayanan (Admin, Dokter, Apoteker)
 
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
+---
 
-    <h1>MedPres – Medical Prescription System</h1>
+## User Roles & Responsibilities
 
-    <p>
-        <strong>MedPres</strong> adalah aplikasi sistem informasi rumah sakit
-        yang dirancang untuk mengelola proses pemeriksaan pasien, pembuatan resep,
-        serta alur pelayanan antar unit secara terintegrasi dan berbasis role.
-    </p>
+### Super Admin
+- Mengelola seluruh data master rumah sakit
+- Mengatur pengguna dan role
+- Konfigurasi sistem dan poli
 
-    <div class="section">
-        <h2>Tutorial Penggunaan</h2>
+### Admin
+- Melakukan screening awal pasien
+- Mengelola tiket berobat pasien
+- Mengatur aktivitas unit pelayanan di masing-masing poli  
+  *(Setiap poli minimal memiliki 1 Admin dan 1 Dokter)*
 
-        <ol>
-            <li>
-                Login menggunakan akun sesuai dengan role yang terdaftar:
-                <strong>Super Admin</strong>, <strong>Admin</strong>,
-                <strong>Dokter</strong>, dan <strong>Apoteker</strong>.
-            </li>
+### Dokter
+- Melakukan pemeriksaan pasien
+- Memberikan diagnosa
+- Membuat resep obat
+- Menentukan dosis dan aturan pemakaian obat
 
-            <li>
-                <strong>Super Admin</strong> bertugas mengelola seluruh data master
-                rumah sakit, termasuk data pengguna, poli, dan konfigurasi sistem.
-            </li>
+### Apoteker
+- Menerima resep dari dokter
+- Menyiapkan dan meracik obat
+- Mengonfirmasi proses pembayaran pasien
 
-            <li>
-                <strong>Admin</strong> bertugas melakukan screening awal pasien,
-                mengelola tiket berobat, serta mengatur aktivitas unit pelayanan
-                pada masing-masing poli.
-                <br>
-                <em>Catatan:</em> Setiap poli minimal memiliki 1 Admin dan 1 Dokter.
-            </li>
+---
 
-            <li>
-                <strong>Dokter</strong> bertugas melakukan pemeriksaan pasien,
-                memberikan diagnosa, membuat resep obat, serta menentukan dosis
-                dan aturan pemakaian obat.
-            </li>
+## Application Flow
 
-            <li>
-                <strong>Apoteker</strong> bertugas menerima resep dari dokter,
-                menyiapkan dan meracik obat sesuai resep, serta mengonfirmasi
-                proses pembayaran pasien.
-            </li>
+1. Pasien didaftarkan dan disaring oleh **Admin**
+2. Pasien diperiksa oleh **Dokter**
+3. Dokter membuat diagnosa dan resep obat
+4. Resep dikirim ke **Apoteker**
+5. Apoteker menyiapkan obat dan menyelesaikan proses pelayanan
 
-            <li>
-                Setiap role memiliki hak akses dan fitur yang berbeda sesuai
-                dengan tanggung jawab masing-masing.
-            </li>
-        </ol>
-    </div>
+Setiap proses tercatat secara sistematis dan terintegrasi dalam sistem.
 
-    <div class="section">
-        <h2>Demo Aplikasi</h2>
-        <p>
-            Aplikasi MedPres dapat diakses dan diuji coba secara langsung melalui tautan berikut:
-        </p>
-        <p>
-            <a href="https://medpres.mrifqia.my.id/" target="_blank">
-                https://medpres.mrifqia.my.id/
-            </a>
-        </p>
-    </div>
+---
 
-    <div class="footer">
-        <p>
-            Dikembangkan oleh:<br>
-            <strong>Muhammad Rifqi Aminuddin</strong>
-        </p>
-    </div>
+## Live Demo
 
-</body>
-</html>
+Aplikasi MedPres dapat diakses dan diuji coba secara langsung melalui tautan berikut:
+
+🔗 **https://medpres.mrifqia.my.id/**
+
+---
+
+## Technology Stack
+
+- **Backend**: Laravel
+- **Frontend**: Blade Template, Bootstrap, JavaScript
+- **Database**: MySQL
+- **Real-time Feature**: Laravel Event & Broadcasting
+- **External API**: Data obat (Medicine) diambil dari API eksternal
+
+---
+
+## Purpose of Development
+
+Aplikasi ini dikembangkan sebagai:
+- Project sistem informasi kesehatan
+- Implementasi sistem resep digital
+- Simulasi alur kerja rumah sakit berbasis teknologi web
+
+---
+
+## Developer
+
+**Muhammad Rifqi Aminuddin**  
+Web Developer  
+
+---
+
+## License
+
+Project ini dikembangkan untuk keperluan pembelajaran dan demonstrasi sistem.  
+Penggunaan lebih lanjut dapat disesuaikan dengan kebutuhan institusi.
