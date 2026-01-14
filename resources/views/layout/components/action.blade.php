@@ -17,6 +17,22 @@
             Pilih
         </button>
     </center>
+@elseif(request()->routeIs('consultation.index'))
+    <center>
+        <button class="btn bg-gradient-primary"
+            onclick="window.location.href = '{{ route('consultation.detail', $identity) }}';">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            Periksa
+        </button>
+    </center>
+@elseif(request()->routeIs('consultation.medicine.list'))
+    <center>
+        <button class="btn bg-gradient-primary"
+            onclick="selectMedicine('{{ $id }}', '{{ $name }}')">
+            <i class="fa-solid fa-check text-white"></i>
+            Pilih
+        </button>
+    </center>
 @else
     <center>
         <button class="btn bg-gradient-success" onclick="showEdit('{{ $identity }}')">

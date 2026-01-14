@@ -72,20 +72,12 @@ Route::group(['middleware' => 'auth'], function () {
         ->group(function () {
             Route::get('/', [ConsultationController::class, 'index'])
                 ->name('index');
-            // Route::post('/', [ConsultationController::class, 'store'])
-            //     ->name('store');
-            // Route::post('/show/{identity}', [ConsultationController::class, 'show'])
-            //     ->name('show');
-            // Route::post('/update/{identity}', [ConsultationController::class, 'update'])
-            //     ->name('update');
-            // Route::post('/delete/{identity}', [ConsultationController::class, 'delete'])
-            //     ->name('delete');
-            // Route::post('/panggil/{identity}', [ConsultationController::class, 'call'])
-            //     ->name('call');
-            // Route::get('/cari-pasien', [ConsultationController::class, 'searchPatient'])
-            //     ->name('search.patient');
-            // Route::get('/cari-dokter', [ConsultationController::class, 'searchDoctor'])
-            //     ->name('search.doctor');
+            Route::get('/detail/{identity}', [ConsultationController::class, 'detail'])
+                ->name('detail');
+            Route::get('/list-obat', [ConsultationController::class, 'medicineList'])
+                ->name('medicine.list');
+            Route::post('/prescription-create', [ConsultationController::class, 'prescriptionCreate'])
+                ->name('prescription.create');
         });
 
     // Menu manajemen

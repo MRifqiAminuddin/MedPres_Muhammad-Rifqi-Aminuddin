@@ -74,11 +74,5 @@
                 }
             });
         }
-
-        function refreshTable() {
-            if (consultationTable) {
-                consultationTable.ajax.reload(null, false);
-            }
-        }
     </script>
 @endsection
