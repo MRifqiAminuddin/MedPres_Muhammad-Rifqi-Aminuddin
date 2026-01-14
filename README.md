@@ -38,6 +38,7 @@ MedPres dikembangkan untuk meningkatkan:
 - Konfigurasi sistem dan poli
 
 ### Admin
+- Mendaftarkan tiket berobat pasien
 - Melakukan screening awal pasien
 - Mengelola tiket berobat pasien
 - Mengatur aktivitas unit pelayanan di masing-masing poli  
