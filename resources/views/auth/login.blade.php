@@ -51,8 +51,11 @@
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
                                         Belum aktivasi akun? Aktivasi
-                                        <a href="{{ route('auth.verification.index') }}" class="text-primary text-gradient font-weight-bold">di sini</a>
+                                        <a href="{{ route('auth.verification.index') }}"
+                                            class="text-primary text-gradient font-weight-bold">di sini</a>
                                     </p>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#listAkunModal">lihat akun</button>
                                 </div>
                             </div>
                         </div>
@@ -61,16 +64,49 @@
             </div>
         </section>
     </main>
+    <div class="modal fade" id="listAkunModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">List Akun</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"><i
+                            class="fa-solid fa-x text-dark"></i></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="alert alert-dark text-white" role="alert">
+                        Dokter<br>
+                        dr.soemarso@gmail.com <br>
+                        12345678
+                    </div>
+                    <div class="alert alert-info text-white" role="alert">
+                        Apoteker<br>
+                        apt.rani@gmail.com <br>
+                        12345678
+                    </div>
+                    <div class="alert alert-success text-white" role="alert">
+                        Admin<br>
+                        admin@gmail.com <br>
+                        12345678
+                    </div>
+                    <div class="alert alert-light text-dark" role="alert">
+                        Super Admin<br>
+                        superadmin@gmail.com <br>
+                        12345678
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
-
-<script>
-    document.body.style.width = "100vw";
-    document.body.style.height = "100vh";
-    document.body.style.backgroundImage = "url('{{ asset('assets/img/login.webp') }}')";
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundRepeat = "no-repeat";
-</script>
+    <script>
+        document.body.style.width = "100vw";
+        document.body.style.height = "100vh";
+        document.body.style.backgroundImage = "url('{{ asset('assets/img/login.webp') }}')";
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundRepeat = "no-repeat";
+    </script>
 @endsection
