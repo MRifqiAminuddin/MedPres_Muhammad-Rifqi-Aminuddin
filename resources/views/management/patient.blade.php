@@ -26,6 +26,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Rekam Medis</th>
                                         <th>Nama</th>
                                         <th>TTL</th>
                                         <th>Jenis Kelamin</th>
@@ -46,7 +47,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createPatientModalTitle"><b>Tambah Dokter</b></h5>
+                    <h5 class="modal-title" id="createPatientModalTitle"><b>Tambah Pasien</b></h5>
                     <button type="button" id="btnCloseCreateModal" class="btn-close text-dark" data-bs-dismiss="modal"
                         aria-label="Close">
                         <span aria-hidden="true">
@@ -58,6 +59,11 @@
                     <form action="" method="POST" id="formCreatePatient" enctype="multipart/form-data" class="row">
                         <input type="hidden" name="_token" id="tokenCreate" value="{{ csrf_token() }}"
                             autocomplete="off">
+                        <div class="form-group col-xl-6 col-md-6 col-sm-12">
+                            <label for="medicalRecordNumberCreate" class="col-form-label">No. Rekam Medis:</label>
+                            <input type="number" class="form-control" name="medicalRecordNumber" id="medicalRecordNumberCreate"
+                                placeholder="Masukkan nama">
+                        </div>
                         <div class="form-group col-xl-6 col-md-6 col-sm-12">
                             <label for="nameCreate" class="col-form-label">Nama:</label>
                             <input type="text" class="form-control" name="name" id="nameCreate"
@@ -73,7 +79,7 @@
 
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="gender" id="genderMaleCreate"
-                                    value="Laki">
+                                    value="Laki Laki">
                                 <label class="form-check-label" for="genderMaleCreate">
                                     Laki-laki
                                 </label>
@@ -99,12 +105,12 @@
 
     <button type="button" id="btnOpenEditModal" data-bs-toggle="modal" data-bs-target="#editPatientModal"
         style="display: none"></button>
-    <div class="modal fade " id="editPatientModal" tabindex="-1" role="dialog" aria-labelledby="editPatientModalTitle"
-        aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade " id="editPatientModal" tabindex="-1" role="dialog"
+        aria-labelledby="editPatientModalTitle" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editPatientModalTitle"><b>Tambah Pasien</b></h5>
+                    <h5 class="modal-title" id="editPatientModalTitle"><b>Edit Pasien</b></h5>
                     <button type="button" id="btnCloseEditModal" class="btn-close text-dark" data-bs-dismiss="modal"
                         aria-label="Close">
                         <span aria-hidden="true">
@@ -116,7 +122,12 @@
                     <form action="" method="POST" id="formEditPatient" enctype="multipart/form-data"
                         class="row">
                         <input type="hidden" name="_token" id="tokenEdit" value="{{ csrf_token() }}"
-                            autocomplete="off">
+                            autocomplete="off">                            
+                        <div class="form-group col-xl-6 col-md-6 col-sm-12">
+                            <label for="medicalRecordNumberEdit" class="col-form-label">No. Rekam Medis:</label>
+                            <input type="number" class="form-control" name="medicalRecordNumber" id="medicalRecordNumberCreate"
+                                placeholder="Masukkan nama">
+                        </div>
                         <div class="form-group col-xl-6 col-md-6 col-sm-12">
                             <label for="nameEdit" class="col-form-label">Nama:</label>
                             <input type="text" class="form-control" name="name" id="nameEdit"
@@ -132,7 +143,7 @@
 
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="gender" id="genderMaleEdit"
-                                    value="Laki">
+                                    value="Laki Laki">
                                 <label class="form-check-label" for="genderMaleEdit">
                                     Laki-laki
                                 </label>
@@ -207,10 +218,14 @@
                 serverSide: true,
                 ajax: "{{ route('management.patient.index') }}",
                 columns: [{
-                        "data": 'DT_RowIndex',
+                        data: 'DT_RowIndex',
                         orderable: false,
                         searchable: false,
                         width: 28,
+                    },
+                    {
+                        data: 'medical_record_number',
+                        name: 'medical_record_number'
                     },
                     {
                         data: 'name',
@@ -226,7 +241,10 @@
                     },
                     {
                         data: 'action',
-                        name: 'action'
+                        name: 'action',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false
                     },
                 ],
                 // Tambahkan event xhr di sini
@@ -275,6 +293,7 @@
                 url: "{{ route('management.patient.show', 'harusGanti') }}".replace('harusGanti', identity),
                 type: 'POST',
                 success: function(response) {
+                    $('#medicalRecordNumberEdit').val(response.data.medical_record_number);
                     $('#nameEdit').val(response.data.name);
                     $('#birthDateEdit').val(response.data.birth_date);
                     $(`input[name="gender"][value="${response.data.gender}"]`)

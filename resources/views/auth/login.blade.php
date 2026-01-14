@@ -14,9 +14,9 @@
                             <div class="card card-plain mt-6" style="background-color: #fff;">
                                 <div class="card-header pb-0 text-left bg-transparent">
                                     <center>
-                                        <h3 class="font-weight-bolder text-info text-gradient">RS Delta Surya
+                                        <h3 class="font-weight-bolder text-primary text-gradient">RS Delta Surya
                                         </h3>
-                                        <h3 class="font-weight-bolder text-info text-gradient">Medical Prescription</h3>
+                                        <h3 class="font-weight-bolder text-primary text-gradient">Medical Prescription</h3>
                                         <p class="mb-0">Silahkan masukkan email dan password Anda</p>
                                     </center>
                                 </div>
@@ -42,7 +42,7 @@
                                             @enderror
                                         </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">
+                                            <button type="submit" class="btn bg-gradient-primary w-100 mt-4 mb-0">
                                                 Masuk
                                             </button>
                                         </div>
@@ -51,7 +51,7 @@
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
                                         Belum aktivasi akun? Aktivasi
-                                        <a href="{{ route('auth.verification.index') }}" class="text-info text-gradient font-weight-bold">di sini</a>
+                                        <a href="{{ route('auth.verification.index') }}" class="text-primary text-gradient font-weight-bold">di sini</a>
                                     </p>
                                 </div>
                             </div>

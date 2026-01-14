@@ -68,7 +68,7 @@
 
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="gender" id="genderMaleCreate"
-                                    value="Laki">
+                                    value="Laki Laki">
                                 <label class="form-check-label" for="genderMaleCreate">
                                     Laki-laki
                                 </label>
@@ -127,7 +127,7 @@
 
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="gender" id="genderMaleEdit"
-                                    value="Laki">
+                                    value="Laki Laki">
                                 <label class="form-check-label" for="genderMaleEdit">
                                     Laki-laki
                                 </label>
@@ -226,7 +226,10 @@
                     },
                     {
                         data: 'action',
-                        name: 'action'
+                        name: 'action',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false
                     },
                 ],
                 // Tambahkan event xhr di sini
@@ -311,6 +314,7 @@
                 type: 'POST',
                 data: formData,
                 success: function(response) {
+                    console.log(response);
                     success("Data <b>" + text + "</b> telah diperbarui");
                     $('#btnCloseEditModal').click();
                     showAll();

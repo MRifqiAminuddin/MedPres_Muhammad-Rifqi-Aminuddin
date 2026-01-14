@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Management;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,7 @@ class PatientController extends Controller
     {
         if ($request->ajax()) {
             return DataTables::of(
-                Patient::select('id', 'name', 'birth_date', 'gender', 'identity')->orderBy('id')
+                Patient::select('id', 'name', 'birth_date', 'gender', 'medical_record_number', 'identity')->orderBy('id')
             )
                 ->addColumn('action', function (Patient $patient) {
                     return view('layout.components.action', [
@@ -33,14 +34,15 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'medical_record_number' => 'required|number|max:10',
             'name' => 'required|string|max:255',
             'birth_date' => 'required|date',
-            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'gender' => ['required', Rule::in(['Laki Laki', 'Perempuan'])],
         ]);
 
         Patient::create([
             ...$validated,
-            'identity' => Str::random(10),
+            'identity' => Str::upper(Str::random(10)),
         ]);
 
         return response()->json([
@@ -53,7 +55,7 @@ class PatientController extends Controller
     public function show(Request $request, string $identity)
     {
         if ($request->ajax()) {
-            $patient = Patient::select('id', 'name', 'birth_date', 'gender', 'identity')->where('identity', $identity)->first();
+            $patient = Patient::select('id', 'name', 'birth_date', 'gender', 'medical_record_number', 'identity')->where('identity', $identity)->first();
             if ($patient) {
                 $data = [
                     'status' => 'success',
@@ -75,9 +77,10 @@ class PatientController extends Controller
         abort_if(!$request->ajax(), 404);
 
         $validated = $request->validate([
+            'medical_record_number' => 'required|number|max:10',
             'name' => 'required|string|max:255',
             'birth_date' => 'required|date',
-            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'gender' => ['required', Rule::in(['Laki Laki', 'Perempuan'])],
         ]);
 
         $patient = Patient::where('identity', $identity)->firstOrFail();

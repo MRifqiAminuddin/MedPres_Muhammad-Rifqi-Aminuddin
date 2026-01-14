@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             DoctorsSeeder::class,
             PharmachistsSeeder::class,
             PatientsSeeder::class,
+            EncounterSeeder::class,
         ]);
     }
 }

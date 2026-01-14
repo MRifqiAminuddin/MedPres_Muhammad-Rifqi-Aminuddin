@@ -14,16 +14,16 @@ class PharmachistsSeeder extends Seeder
         $faker = Faker::create('id_ID');
 
         for ($i = 1; $i <= 20; $i++) {
-            $gender = $faker->randomElement(['Laki', 'Perempuan']);
+            $gender = $faker->randomElement(['Laki Laki', 'Perempuan']);
 
             $user = User::create([
-                'name' => 'apt. ' . $faker->name($gender === 'Laki' ? 'male' : 'female') . ', S.Farm',
+                'name' => 'apt. ' . $faker->name($gender === 'Laki Laki' ? 'male' : 'female') . ', S.Farm',
                 'role' => 'Apoteker',
                 'gender' => $gender,
                 'email' => $faker->unique()->safeEmail(),
                 'password' => bcrypt('12345678'),
                 'activation' => true,
-                'identity' => Str::random(10),
+                'identity' => Str::upper(Str::random(10)),
             ]);
 
             $user->pharmacist()->create([
@@ -33,7 +33,7 @@ class PharmachistsSeeder extends Seeder
                     rand(0, 4),
                     rand(1000000, 9999999)
                 ),
-                'identity' => Str::random(10),
+                'identity' => Str::upper(Str::random(10)),
             ]);
         }
 
@@ -44,7 +44,7 @@ class PharmachistsSeeder extends Seeder
             'email' => 'apt.rani@gmail.com',
             'password' => bcrypt('12345678'),
             'activation' => true,
-            'identity' => Str::random(10),
+            'identity' => Str::upper(Str::random(10)),
         ]);
 
         $user->pharmacist()->create([
@@ -54,7 +54,7 @@ class PharmachistsSeeder extends Seeder
                 rand(0, 4),
                 rand(1000000, 9999999)
             ),
-            'identity' => Str::random(10),
+            'identity' => Str::upper(Str::random(10)),
         ]);
     }
 }

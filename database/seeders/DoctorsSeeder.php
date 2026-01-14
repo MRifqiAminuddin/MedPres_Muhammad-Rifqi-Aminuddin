@@ -36,17 +36,19 @@ class DoctorsSeeder extends Seeder
             'Tumbuh Kembang',
         ];
 
+        $stationCount = count($stations);
+
         for ($i = 1; $i <= 60; $i++) {
-            $gender = $faker->randomElement(['Laki', 'Perempuan']);
+            $gender = $faker->randomElement(['Laki Laki', 'Perempuan']);
 
             $user = User::create([
-                'name' => 'dr. ' . $faker->name($gender === 'Laki' ? 'male' : 'female'),
-                'role' => 'Dokter',
-                'gender' => $gender,
-                'email' => $faker->unique()->safeEmail(),
-                'password' => bcrypt('12345678'),
+                'name'       => 'dr. ' . $faker->name($gender === 'Laki Laki' ? 'male' : 'female') . ', S.Ked',
+                'role'       => 'Dokter',
+                'gender'     => $gender,
+                'email'      => $faker->unique()->safeEmail(),
+                'password'   => bcrypt('12345678'),
                 'activation' => true,
-                'identity' => Str::random(10),
+                'identity'   => Str::upper(Str::random(10)),
             ]);
 
             $user->doctor()->create([
@@ -62,19 +64,20 @@ class DoctorsSeeder extends Seeder
                     rand(1000, 9999),
                     rand(2, 4)
                 ),
-                'station' => $stations[array_rand($stations)],
-                'identity' => Str::random(10),
+                'station' => $stations[($i - 1) % $stationCount],
+                'identity' => Str::upper(Str::random(10)),
             ]);
         }
+
 
         $user = User::create([
             'name' => 'Prof. dr. Soemarso',
             'role' => 'Dokter',
-            'gender' => 'Laki',
+            'gender' => 'Laki Laki',
             'email' => 'dr.soemarso@gmail.com',
             'password' => bcrypt('12345678'),
             'activation' => true,
-            'identity' => Str::random(10),
+            'identity' => Str::upper(Str::random(10)),
         ]);
 
         $user->doctor()->create([
@@ -90,8 +93,8 @@ class DoctorsSeeder extends Seeder
                 rand(1000, 9999),
                 rand(2, 4)
             ),
-            'station' => $stations[array_rand($stations)],
-            'identity' => Str::random(10),
+            'station' => 'Anak',
+            'identity' => Str::upper(Str::random(10)),
         ]);
     }
 }

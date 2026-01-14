@@ -16,10 +16,16 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="row text-end me-1">
                             <span class="col-12 breadcrumb-item text-sm active text-capitalize">
-                                {{ Auth::user()->role }}
+                                @if (Auth::user()->role == 'Admin')
+                                    Admin Poli {{ Auth::user()->admin->station }}
+                                @elseif(Auth::user()->role == 'Dokter')
+                                    Dokter Poli {{ Auth::user()->doctor->station }}
+                                @else
+                                    {{ Auth::user()->role }}
+                                @endif
                             </span>
                             <span class="col-12 font-weight-bolder text-capitalize" style="color: #344767!important">
-                                {{ Auth::user()->gender == 'Male' ? 'Bapak ' : 'Ibu ' }}{{ Auth::user()->name }}
+                                {{ Auth::user()->gender == 'Laki Laki' ? 'Bapak ' : 'Ibu ' }}{{ Auth::user()->name }}
                             </span>
                         </div>
                         <i class="fa-solid {{ Auth::user()->role_icon }}"></i>

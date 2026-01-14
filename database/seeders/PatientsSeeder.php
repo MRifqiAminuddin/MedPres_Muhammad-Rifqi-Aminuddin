@@ -17,7 +17,7 @@ class PatientsSeeder extends Seeder
             [
                 'name' => 'Ahmad Prasetyo',
                 'birth_date' => '1990-04-12',
-                'gender' => 'Laki'
+                'gender' => 'Laki Laki'
             ],
             [
                 'name' => 'Siti Aisyah Rahma',
@@ -27,7 +27,7 @@ class PatientsSeeder extends Seeder
             [
                 'name' => 'Budi Santoso',
                 'birth_date' => '1978-01-05',
-                'gender' => 'Laki'
+                'gender' => 'Laki Laki'
             ],
             [
                 'name' => 'Dewi Lestari',
@@ -37,16 +37,17 @@ class PatientsSeeder extends Seeder
             [
                 'name' => 'Rizky Maulana',
                 'birth_date' => '2001-07-18',
-                'gender' => 'Laki'
+                'gender' => 'Laki Laki'
             ],
         ];
 
         foreach ($patients as $data) {
             Patient::create([
+                'medical_record_number' => rand(1000000000, 9999999999),
                 'name' => $data['name'],
                 'birth_date' => $data['birth_date'],
                 'gender' => $data['gender'],
-                'identity' => Str::random(10)
+                'identity' => Str::upper(Str::random(10))
             ]);
         }
     }

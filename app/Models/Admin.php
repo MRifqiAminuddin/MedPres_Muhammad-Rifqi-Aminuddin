@@ -5,12 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Doctor extends Model
+class Admin extends Model
 {
     protected $fillable = [
         'user_id',
-        'str_number',
-        'sip_number',
         'station',
         'identity'
     ];

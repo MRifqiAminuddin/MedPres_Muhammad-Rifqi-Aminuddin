@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Management;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
@@ -31,7 +32,7 @@ class PharmacistController extends Controller
     {
         $request->validate([
             'name'      => ['required', 'string', 'max:255'],
-            'gender'    => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'gender'    => ['required', Rule::in(['Laki Laki', 'Perempuan'])],
             'email'     => ['required', 'email', 'max:255', 'unique:users,email'],
             'strNumber' => ['required', 'string', 'max:100'],
         ]);
@@ -42,12 +43,12 @@ class PharmacistController extends Controller
                 'role'     => 'Apoteker',
                 'gender'   => $request->gender,
                 'email'    => $request->email,
-                'identity' => Str::random(10),
+                'identity' => Str::upper(Str::random(10)),
             ]);
 
             $user->pharmacist()->create([
                 'str_number' => $request->strNumber,
-                'identity'   => Str::random(10),
+                'identity'   => Str::upper(Str::random(10)),
             ]);
         });
 
@@ -85,7 +86,7 @@ class PharmacistController extends Controller
 
         $request->validate([
             'name'      => ['required', 'string', 'max:255'],
-            'gender'    => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'gender'    => ['required', Rule::in(['Laki Laki', 'Perempuan'])],
             'email'     => [
                 'required',
                 'email',

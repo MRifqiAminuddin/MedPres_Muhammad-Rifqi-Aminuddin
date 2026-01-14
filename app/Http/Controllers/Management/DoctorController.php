@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Management;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
@@ -59,7 +60,7 @@ class DoctorController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'gender' => ['required', Rule::in(['Laki Laki', 'Perempuan'])],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'strNumber' => ['required', 'string', 'max:100'],
             'sipNumber' => ['required', 'string', 'max:100'],
@@ -97,14 +98,14 @@ class DoctorController extends Controller
                 'role' => 'Dokter',
                 'gender' => $request['gender'],
                 'email' => $request['email'],
-                'identity' => Str::random(10)
+                'identity' => Str::upper(Str::random(10))
             ]);
 
             $doctor = $user->doctor()->create([
                 'str_number' => $request['strNumber'],
                 'sip_number' => $request['sipNumber'],
                 'station' => $request['station'],
-                'identity' => Str::random(10)
+                'identity' => Str::upper(Str::random(10))
             ]);
         });
 
@@ -143,7 +144,7 @@ class DoctorController extends Controller
 
         $request->validate([
             'name'      => ['required', 'string', 'max:255'],
-            'gender'    => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'gender'    => ['required', Rule::in(['Laki Laki', 'Perempuan'])],
             'email'     => [
                 'required',
                 'email',

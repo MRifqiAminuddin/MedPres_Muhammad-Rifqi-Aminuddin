@@ -39,7 +39,7 @@ class VariablesSeeder extends Seeder
             Variable::create([
                 'name' => 'Login',
                 'content' => $data['access_token'],
-                'identity' => Str::random(10)
+                'identity' => Str::upper(Str::random(10))
             ]);
         }
     }

@@ -27,9 +27,10 @@ return new class extends Migration
             $table->integer('respiration_rate');
             $table->decimal('body_temperature', 4, 1);
             $table->text('anamnesis');
-            $table->text('diagnosis');
+            $table->text('diagnosis')->nullable();
             $table->string('other_document')->nullable();
-            $table->date('encounter_date');
+            $table->dateTime('encounter_date');
+            $table->enum('status', ['Sudah Selesai', 'Periksa', 'Belum Selesai'])->default('Belum Selesai');
             $table->string('identity', 12)->unique();
             $table->timestamps();
         });

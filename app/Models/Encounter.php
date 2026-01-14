@@ -28,6 +28,7 @@ class Encounter extends Model
         'diagnosis',
         'other_document',
         'encounter_date',
+        'status',
         'identity'
     ];
 
@@ -39,7 +40,7 @@ class Encounter extends Model
         'heart_rate' => 'integer',
         'respiration_rate' => 'integer',
         'body_temperature' => 'decimal:1',
-
+        'encounter_date' => 'datetime',
     ];
 
     public function patient(): BelongsTo

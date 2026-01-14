@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Management;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
@@ -30,7 +31,7 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'gender' => ['required', Rule::in(['Laki Laki', 'Perempuan'])],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
         ]);
 
@@ -39,7 +40,7 @@ class AdminController extends Controller
             'role'     => 'Admin',
             'gender'   => $validated['gender'],
             'email'    => $validated['email'],
-            'identity' => Str::random(10),
+            'identity' => Str::upper(Str::random(10)),
         ]);
 
         return response()->json([
@@ -81,7 +82,7 @@ class AdminController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'gender' => ['required', Rule::in(['Laki', 'Perempuan'])],
+            'gender' => ['required', Rule::in(['Laki Laki', 'Perempuan'])],
             'email' => [
                 'required',
                 'email',

@@ -17,7 +17,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
             $table->enum('status', ['Belum', 'Menunggu', 'Sudah'])->default('Belum');
-            $table->date('prescription_date');
+            $table->dateTime('prescription_date');
             $table->string('identity', 12)->unique();
             $table->timestamps();
         });

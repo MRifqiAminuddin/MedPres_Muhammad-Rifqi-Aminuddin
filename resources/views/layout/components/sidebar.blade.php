@@ -12,21 +12,8 @@
         </div>
     </div>
     <hr class="horizontal dark">
-    {{-- <div class="card h-auto py-4 mb-4">
-        <h5 class="text-center">Management License</h5>
-    </div> --}}
     <div class="collapse navbar-collapse w-auto h-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
-            {{-- <li class="nav-item">
-                <a class="nav-link {{ Request::routeIs('dashboard.index') ? 'active' : '' }}" href="{{ route('dashboard.index') }}"">
-                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fa-solid fa-lg fa-search ps-2 pe-2 text-center text-dark"
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Dokumen</span>
-                </a>
-            </li> --}}
             <li class="nav-item mt-1 mb-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Menu Utama</h6>
             </li>
@@ -43,7 +30,39 @@
                 </a>
             </li>
 
-            @if (auth()->user()->hasRole('Admin'))
+            @if (auth()->user()->role == 'Dokter')
+                <li class="nav-item">
+                    <a id="menuDashboard" class="nav-link {{ Request::routeIs('consultation.index') ? 'active' : '' }}"
+                        href="{{ route('consultation.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fa-xl fa-solid fa-laptop-medical ps-2 pe-2 text-center text-dark"
+                                aria-hidden="true">
+                            </i>
+                        </div>
+                        <span class="nav-link-text ms-1">Konsultasi</span>
+                    </a>
+                </li>
+            @endif
+
+            @if (auth()->user()->role == 'Admin')
+                <li class="nav-item">
+                    <a id="menuDashboard" class="nav-link {{ Request::routeIs('encounter.index') ? 'active' : '' }}"
+                        href="{{ route('encounter.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fa-xl fa-solid fa-notes-medical ps-2 pe-2 text-center text-dark"
+                                aria-hidden="true">
+                            </i>
+                        </div>
+                        <span class="nav-link-text ms-1">Kunjungan</span>
+                    </a>
+                </li>
+            @endif
+
+            @if (auth()->user()->role == 'Super Admin')
                 <li class="nav-item mt-3 mb-2">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Manajemen</h6>
                 </li>
