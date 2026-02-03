@@ -48,7 +48,12 @@ class ConsultationController extends Controller
     public function detail($identity)
     {
         $encounter = Encounter::where('identity', $identity)->firstOrFail();
-        return view('consultation.detail', compact('encounter'));
+        if (isset($encounter->prescription->prescriptionMedicines)) {
+            $medicines = $encounter->prescription->prescriptionMedicines;
+        } else {
+            $medicines = null;
+        }
+        return view('consultation.detail', compact('encounter', 'medicines'));
     }
 
     public function medicineList(Request $request)
@@ -100,55 +105,65 @@ class ConsultationController extends Controller
     {
         $validated = $request->validate([
             'identity'         => 'required|string|exists:encounters,identity',
-            'diagnosa'        => 'required|string',
-            'medicine_ids'     => 'required|array|min:1',
-            'medicine_ids.*'   => 'required|uuid',
-            'dosage'           => 'required|array',
-            'dosage.*'         => 'required|string',
-            'rule'             => 'required|array',
-            'rule.*'           => 'required|string',
+            'diagnosa'         => 'required|string',
         ]);
 
-        if (
-            count($validated['medicine_ids']) !== count($validated['dosage']) ||
-            count($validated['medicine_ids']) !== count($validated['rule'])
-        ) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Jumlah medicine, dosage, dan rule tidak konsisten',
-            ], 422);
-        }
-
         $encounter = Encounter::where('identity', $validated['identity'])->firstOrFail();
+
+        if (isset($encounter->prescription)) {
+            $encounter->prescription->delete();
+        }
 
         $encounter->update([
             'diagnosis' => $validated['diagnosa'],
             'status' => 'Sudah Selesai'
         ]);
 
-        $prescription = Prescription::create([
-            'encounter_id'       => $encounter->id,
-            'prescription_date'  => now(),
-            'identity'           => Str::upper(Str::random(10)),
-        ]);
-
-        foreach ($validated['medicine_ids'] as $index => $medicineId) {
-            PrescriptionMedicine::create([
-                'prescription_id' => $prescription->id,
-                'medicine_id'     => $medicineId,
-                'dosage'          => $validated['dosage'][$index],
-                'rule'            => $validated['rule'][$index],
-                'identity'        => Str::upper(Str::random(10)),
+        if (isset($validated['medicine_ids'])) {
+            $prescription = Prescription::create([
+                'encounter_id'       => $encounter->id,
+                'prescription_date'  => now(),
+                'identity'           => Str::upper(Str::random(10)),
             ]);
+
+            foreach ($validated['medicine_ids'] as $index => $medicineId) {
+                PrescriptionMedicine::create([
+                    'prescription_id' => $prescription->id,
+                    'medicine_id'     => $medicineId,
+                    'medicine_name'   => $validated['medicine_name'][$index],
+                    'qty'             => $validated['qty'][$index],
+                    'dosage'          => $validated['dosage'][$index],
+                    'rule'            => $validated['rule'][$index],
+                    'identity'        => Str::upper(Str::random(10)),
+                ]);
+            }
         }
 
         return response()->json([
             'status'  => 'success',
             'message' => 'Resep berhasil disimpan',
-            'data'    => [
-                'prescription_id' => $prescription->id,
-                'encounter_id'    => $encounter->id,
-            ],
         ], 201);
+    }
+
+    public function history(Request $request)
+    {
+        if ($request->ajax()) {
+            return DataTables::of(
+                Encounter::select('id', 'doctor_id', 'patient_id', 'encounter_date', 'status', 'anamnesis', 'identity')
+                    ->whereDate('encounter_date', Carbon::today()->format('Y-m-d'))
+                    ->where('status', 'Sudah Selesai')
+                    ->where('doctor_id', Auth::user()->doctor->id)
+                    ->orderBy('encounter_date', 'asc')
+            )
+                ->addColumn('patient_name', fn(Encounter $e) => $e->patient->name)
+                ->addColumn('patient_gender', fn(Encounter $e) => $e->patient->gender)
+                ->addColumn('action', function (Encounter $encounter) {
+                    return view('layout.components.action', [
+                        'identity' => $encounter->identity,
+                    ])->render();
+                })
+                ->addIndexColumn()
+                ->make(true);
+        }
     }
 }

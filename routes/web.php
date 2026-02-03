@@ -74,18 +74,18 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('index');
             Route::post('/', [PharmacyController::class, 'store'])
                 ->name('store');
+            Route::get('/history', [PharmacyController::class, 'history'])
+                ->name('history');
             Route::post('/show/{identity}', [PharmacyController::class, 'show'])
                 ->name('show');
-            Route::post('/update/{identity}', [PharmacyController::class, 'update'])
-                ->name('update');
-            Route::post('/delete/{identity}', [PharmacyController::class, 'delete'])
-                ->name('delete');
-            Route::post('/panggil/{identity}', [PharmacyController::class, 'call'])
-                ->name('call');
-            Route::get('/cari-pasien', [PharmacyController::class, 'searchPatient'])
-                ->name('search.patient');
-            Route::get('/cari-dokter', [PharmacyController::class, 'searchDoctor'])
-                ->name('search.doctor');
+            Route::post('/cancel/{identity}', [PharmacyController::class, 'cancel'])
+                ->name('cancel');
+            Route::post('/done/{identity}', [PharmacyController::class, 'done'])
+                ->name('done');
+            Route::post('/pay/{identity}', [PharmacyController::class, 'pay'])
+                ->name('pay');
+            Route::post('/receipt/{identity}', [PharmacyController::class, 'receipt'])
+                ->name('receipt');
         });
 
 
@@ -96,6 +96,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->group(function () {
             Route::get('/', [ConsultationController::class, 'index'])
                 ->name('index');
+            Route::get('/history', [ConsultationController::class, 'history'])
+                ->name('history');
             Route::get('/detail/{identity}', [ConsultationController::class, 'detail'])
                 ->name('detail');
             Route::get('/list-obat', [ConsultationController::class, 'medicineList'])

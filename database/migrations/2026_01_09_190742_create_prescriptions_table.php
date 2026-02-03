@@ -22,6 +22,8 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->enum('status', ['Belum', 'Menunggu', 'Sudah'])->default('Belum');
             $table->dateTime('prescription_date');
+            $table->dateTime('paid_date')->nullable();
+            $table->integer('total_price')->nullable();
             $table->string('identity', 12)->unique();
             $table->timestamps();
         });

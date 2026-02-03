@@ -69,7 +69,7 @@
                         <div class="form-group col-12 mb-3">
                             <input type="hidden" name="identity" value="{{ $encounter->identity }}">
                             <label>Diagnosa</label>
-                            <textarea name="diagnosa" id="diagnosa" class="form-control" rows="6" placeholder="Isi diagnosa"></textarea>
+                            <textarea name="diagnosa" id="diagnosa" class="form-control" rows="6" placeholder="Isi diagnosa">{{ $encounter->diagnosis ? $encounter->diagnosis : "" }}</textarea>
                         </div>
 
                         <div class="form-group col-12">
@@ -79,7 +79,62 @@
                                 onclick="openMedicineModal();">
                                 <i class="fas fa-pills"></i>&nbsp;&nbsp;Pilih Obat
                             </button>
-                            <div id="medicineDiv"></div>
+                            <div id="medicineDiv">
+                                @if ($medicines)
+                                    @foreach ($medicines as $medicine)
+                                        <div class="row g-3 border-bottom medicine-item" data-id="{{ $medicine->medicine_id }}">
+                                            <input type="hidden" name="medicine_ids[]" value="{{ $medicine->medicine_id }}">
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label fw-bold">Nama Obat</label>
+                                                    <input type="text" class="form-control bg-light" name="medicine_name[]" value="{{ $medicine->medicine_name }}"
+                                                        readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="form-label fw-bold">Jumlah</label>
+                                                    <input type="number" class="form-control" name="qty[]"
+                                                        placeholder="0" min="1" value="{{ $medicine->qty }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="form-label fw-bold">Dosis</label>
+                                                    <select name="dosage[]" class="form-select">
+                                                        <option value="1x1" {{ $medicine->dosage == "1x1" ? "selected" : "" }}>1 x 1</option>
+                                                        <option value="2x1" {{ $medicine->dosage == "2x1" ? "selected" : "" }}>2 x 1</option>
+                                                        <option value="3x1" {{ $medicine->dosage == "3x1" ? "selected" : "" }}>3 x 1</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label fw-bold">Aturan Pakai</label>
+                                                    <select name="rule[]" class="form-select">
+                                                        <option value="Sesudah Makan" {{ $medicine->rule == "Sesudah Makan" ? "selected" : "" }}>Sesudah Makan</option>
+                                                        <option value="Sebelum Makan" {{ $medicine->rule == "Sebelum Makan" ? "selected" : "" }}>Sebelum Makan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="form-label d-none d-md-block">&nbsp;</label> <button
+                                                        type="button" class="btn btn-outline-danger w-100"
+                                                        onclick="removeMedicine('{{ $medicine->medicine_id }}}')">
+                                                        <i class="bi bi-trash"></i> Hapus
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
                         <div class="form-group col-12">
                             <button type="button" class="btn bg-gradient-success" onclick="saveAll()">Simpan</button>
@@ -121,7 +176,8 @@
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content bg-transparent border-0">
                 <div class="d-flex justify-content-end mb-2">
-                    <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal" id="btnCloseCreateModal">
+                    <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal"
+                        id="btnCloseCreateModal">
                         <i class="fa-solid fa-xmark text-white"></i>
                     </button>
                 </div>
@@ -190,37 +246,55 @@
             const container = document.getElementById('medicineDiv');
 
             const html = `
-            <div class="row g-2 mb-2 medicine-item" data-id="${id}">
-                <input type="hidden" name="medicine_ids[]" value="${id}">
+                <div class="row g-3 border-bottom medicine-item" data-id="${id}">
+                    <input type="hidden" name="medicine_ids[]" value="${id}">
 
-                <div class="col-md-4">
-                    <input type="text" class="form-control" value="${name}" readonly>
-                </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label fw-bold">Nama Obat</label>
+                            <input type="text" class="form-control bg-light" name=medicine_name[] value="${name}" readonly>
+                        </div>
+                    </div>
 
-                <div class="col-md-3">
-                    <select name="dosage[]" class="form-select">
-                        <option value="1x1">1x1</option>
-                        <option value="2x1">2x1</option>
-                        <option value="3x1">3x1</option>
-                    </select>
-                </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="form-label fw-bold">Jumlah</label>
+                            <input type="number" class="form-control" name="qty[]" placeholder="0" min="1" value=1>
+                        </div>
+                    </div>
 
-                <div class="col-md-3">
-                    <select name="rule[]" class="form-select">
-                        <option value="Sesudah Makan">Sesudah Makan</option>
-                        <option value="Sebelum Makan">Sebelum Makan</option>
-                    </select>
-                </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="form-label fw-bold">Dosis</label>
+                            <select name="dosage[]" class="form-select">
+                                <option value="1x1">1 x 1</option>
+                                <option value="2x1">2 x 1</option>
+                                <option value="3x1">3 x 1</option>
+                            </select>
+                        </div>
+                    </div>
 
-                <div class="col-md-2">
-                    <button type="button"
-                        class="btn btn-danger w-100"
-                        onclick="removeMedicine('${id}')">
-                        Hapus
-                    </button>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label fw-bold">Aturan Pakai</label>
+                            <select name="rule[]" class="form-select">
+                                <option value="Sesudah Makan">Sesudah Makan</option>
+                                <option value="Sebelum Makan">Sebelum Makan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="form-label d-none d-md-block">&nbsp;</label> <button type="button"
+                                    class="btn btn-outline-danger w-100"
+                                    onclick="removeMedicine('${id}')">
+                                <i class="bi bi-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
 
             container.insertAdjacentHTML('beforeend', html);
 

@@ -62,7 +62,6 @@
                 });
             }
 
-
             function success(text) {
                 let timerInterval;
                 Swal.fire({

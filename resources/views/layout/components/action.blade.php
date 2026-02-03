@@ -17,28 +17,36 @@
             Pilih
         </button>
     </center>
-@elseif(request()->routeIs('consultation.index'))
+@elseif(request()->routeIs('consultation.index') || request()->routeIs('consultation.history'))
     <center>
         <button class="btn bg-gradient-primary"
             onclick="window.location.href = '{{ route('consultation.detail', $identity) }}';">
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            Periksa
+            {{ request()->routeIs('consultation.index') ? 'Periksa' : 'Ubah' }}
         </button>
     </center>
 @elseif(request()->routeIs('consultation.medicine.list'))
     <center>
-        <button class="btn bg-gradient-primary"
-            onclick="selectMedicine('{{ $id }}', '{{ $name }}')">
+        <button class="btn bg-gradient-primary" onclick="selectMedicine('{{ $id }}', '{{ $name }}')">
             <i class="fa-solid fa-check text-white"></i>
             Pilih
         </button>
     </center>
 @elseif(request()->routeIs('pharmacy.index'))
     <center>
+        @if ($pharmacy_id == null)
+            <button class="btn bg-gradient-primary" onclick="showTask('{{ $identity }}', 'pick')">
+                <i class="fa-solid fa-mortar-pestle text-white"></i>
+                Racik Obat
+            </button>
+        @endif
+    </center>
+@elseif(request()->routeIs('pharmacy.history'))
+    <center>
         <button class="btn bg-gradient-primary"
-            onclick="selectMedicine('{{ $identity }}', '{{ $name }}')">
-            <i class="fa-solid fa-mortar-pestle text-white"></i>
-            Racik Obat
+            onclick="window.open('{{ route('pharmacy.receipt', $identity) }}', '_blank');">
+            <i class="fa-solid fa-print text-white"></i>
+            Cetak Kwitansi
         </button>
     </center>
 @else

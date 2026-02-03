@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Encounter extends Model
 {
@@ -51,5 +52,10 @@ class Encounter extends Model
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class, 'doctor_id', 'id');
+    }
+
+    public function prescription(): HasOne
+    {
+        return $this->hasOne(Prescription::class, 'encounter_id', 'id');
     }
 }

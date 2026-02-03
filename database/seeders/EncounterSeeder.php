@@ -43,13 +43,12 @@ class EncounterSeeder extends Seeder
                 'body_temperature' => $faker->randomFloat(1, 36.0, 38.5),
 
                 'anamnesis' => $faker->sentence(12),
-                'diagnosis' => $faker->sentence(6),
 
-                'other_document' => $faker->optional(0.3)->filePath(),
+                'other_document' => "medpres.png",
 
                 'encounter_date' => Carbon::now(),
 
-                'status' => $faker->randomElement(['Sudah Selesai', 'Belum Selesai']),
+                'status' => "Belum Selesai",
 
                 'identity' => Str::upper(Str::random(10)),
             ]);

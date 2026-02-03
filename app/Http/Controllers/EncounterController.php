@@ -32,6 +32,7 @@ class EncounterController extends Controller
                     ->where('status', 'Belum Selesai')
                     ->whereIn('doctor_id', $doctorIds)
                     ->orderBy('encounter_date', 'asc')
+                    ->orderBy('id', 'asc')
             )
                 ->addColumn('doctor_name', fn(Encounter $e) => $e->doctor->user->name)
                 ->addColumn('patient_name', fn(Encounter $e) => $e->patient->name)
@@ -264,4 +265,5 @@ class EncounterController extends Controller
             'message' => 'Aksi panggil pasien berhasil',
         ]);
     }
+
 }

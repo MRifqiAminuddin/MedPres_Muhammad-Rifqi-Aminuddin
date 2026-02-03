@@ -13,7 +13,15 @@ class Prescription extends Model
         'pharmacist_id',
         'status',
         'prescription_date',
-        'identity'
+        'paid_date',
+        'total_price',
+        'identity',
+
+    ];
+
+    protected $casts = [
+        'prescription_date' => 'date',
+        'paid_date' => 'date',
     ];
 
     public function encounter(): BelongsTo
